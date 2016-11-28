@@ -1,0 +1,27 @@
+<ion-view>
+  <ion-nav-title>
+    <span style="font-size:1.5rem">Restaurants</span>
+  </ion-nav-title>
+
+  <ion-nav-buttons side="right">
+    <a><i class="button icon ion-chevron-up" ng-click="chc.reverse = !chc.reverse" ng-show="chc.reverse"></i></a>
+    <a><i class="button icon ion-chevron-down" ng-click="chc.reverse = !chc.reverse" ng-show="!chc.reverse"></i></a>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <div class="spinner-container" ng-show="!chc.restaurantList">
+      <ion-spinner class="spinner-energized"></ion-spinner>
+    </div>
+
+    <div class="list" id="restList" ng-repeat="restaurant in chc.restaurantList | orderBy:'waitlist_id.quotedTime':chc.reverse">
+      <a class="item item-avatar item-icon-right" id="restItem" ui-sref="customer.restaurant({restaurantId: restaurant._id})">
+        <img ng-src="{{restaurant.restaurantIcon}}">
+        <h2>{{restaurant.restaurantName}}</h2>
+        <p id="custHomeRestList">{{restaurant.foodType}}</p>
+        <p id="custHomeRestList">{{restaurant.addressLineOne}}</p>
+        <p id="custHomeRestList">{{restaurant.city}}, {{restaurant.state}}, {{restaurant.zipcode}}</p>
+        <i class="icon ion-ios-clock-outline" id="timerNumberCustomerHome">{{restaurant.waitlist_id.quotedTime}}</i>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

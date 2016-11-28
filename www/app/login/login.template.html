@@ -1,0 +1,47 @@
+<ion-view view-title="Login">
+  <ion-content class="padding bg login">
+    <div class="loginRegHeader">
+      <!-- <h1>Waitr.</h1> -->
+      <img id="loginLogo"src="./img/logo.svg" alt="" />
+      <br><br>
+      <h4>Don't wait anymore.</h4>
+      <br>
+    </div>
+
+    <form ng-submit="logCtrl.login(logCtrl.credentials)">
+      <div class="list list-inset loginReg">
+        <label class="item item-input">
+          <i class="icon ion-ios-email placeholder-icon"></i>
+          <input type="email" placeholder="Email" autocapitalize="none" ng-model="logCtrl.credentials.email" autofocus="true">
+          <i class="ion-close" on-touch="logCtrl.credentials.email = ''" ng-show="logCtrl.credentials.email !== ''"></i>
+        </label>
+      </div>
+
+      <div class="list list-inset loginReg">
+        <label class="item item-input">
+          <i class="icon ion-locked placeholder-icon"></i>
+          <input type="password" placeholder="Password" autocapitalize="none" ng-model="logCtrl.credentials.password">
+          <i class="ion-close" on-touch="logCtrl.credentials.password = ''" ng-show="logCtrl.credentials.password !== ''"></i>
+        </label>
+      </div>
+
+      <button type="submit" class="button button-block button-energized" style="font-size: 20px; font-weight: 700;">
+        LOGIN
+      </button>
+    </form>
+
+    <!-- <br>
+    <div style="font-size: 3em; color: #444444; text-align: center;">
+      <i class="fa fa-facebook-square"></i>
+      <i class="fa fa-google-plus-square"></i>
+      <i class="fa fa-twitter-square"></i>
+    </div> -->
+
+    <div class="bar bar-clear" style="height: 60px;">
+      <div class="loginRegFooter">
+        <a ui-sref="customer-sign-up">No account? Register.</a>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>
