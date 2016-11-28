@@ -1,4 +1,4 @@
-import Restaurant from './RestaurantModel';
+const Restaurant = require('./RestaurantModel');
 
 module.exports = {
   create(req, res) {

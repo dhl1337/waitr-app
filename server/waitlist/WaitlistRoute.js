@@ -1,4 +1,4 @@
-import WaitlistController from './WaitlistController';
+const WaitlistController = require('./WaitlistController');
 
 module.exports = app => {
   app.get('/api/waitlist', WaitlistController.read);

@@ -1,5 +1,5 @@
-import Waitlist from './WaitlistModel';
-import User from '../user/UserModel';
+const Waitlist = require('./WaitlistModel');
+const User = require('../user/UserModel');
 
 const findBy_Id = (list, id) => {
   for (let i = 0; i < list.length; i++) {
