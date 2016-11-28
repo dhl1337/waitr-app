@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const WaitlistSchema = mongoose.Schema({
   restaurant_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant'},
