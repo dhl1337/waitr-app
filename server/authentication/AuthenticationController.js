@@ -1,8 +1,8 @@
-import Waitlist from '../waitlist/WaitlistModel';
-import User from '../user/UserModel';
-import jwt from 'jsonwebtoken';
-import config from '../config/config';
-import Restaurant from '../restaurant/RestaurantModel'
+const Waitlist = require('../waitlist/WaitlistModel');
+const User = require('../user/UserModel');
+const jwt = require('jsonwebtoken');
+const config = require('../config/config');
+const Restaurant = require('../restaurant/RestaurantModel');
 
 module.exports = {
   register(req, res) {
