@@ -7,18 +7,24 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var babel = require('gulp-babel');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 
 var paths = {
-    es6: ['./www/**/*.js'],
+    es6: ['./www/**/*.js', '!js/**/*.min.js', '!./www/js/app.js', '!./www/lib/**'],
     sass: ['./scss/**/*.scss']
 };
 
 gulp.task('default', ['es6', 'sass']);
 
 gulp.task('es6', function () {
-    gulp.src('./www/**/*.js')
+    gulp.src(['./www/**/*.js', '!js/**/*.min.js', '!./www/js/app.js', '!./www/lib/**'])
         .pipe(babel({presets: ['es2015']}))
+        .pipe(concat('scripts.js'))
         .pipe(gulp.dest('./www/js'))
+        .pipe(rename('scripts.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./www/js'));
 });
 
 gulp.task('sass', function (done) {
