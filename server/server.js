@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
 
-const port = 3001;
+const port = 3000;
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
