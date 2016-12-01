@@ -21,14 +21,14 @@
             })
             .state('customer-sign-up', {
                 url: '/customer-registration',
-                templateUrl: 'app/registration/custReg.template.html',
-                controller: 'RegistrationCtrl',
+                templateUrl: 'app/registration/customer-registration.html',
+                controller: 'RegistrationController',
                 controllerAs: 'regCtrl'
             })
             .state('restaurant-sign-up', {
                 url: '/restaurant-registration',
-                templateUrl: 'app/registration/restReg.template.html',
-                controller: 'RegistrationCtrl',
+                templateUrl: 'app/registration/restaurant-registration.html',
+                controller: 'RegistrationController',
                 controllerAs: 'regCtrl'
             })
 

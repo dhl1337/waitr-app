@@ -134,13 +134,13 @@
             controllerAs: 'logCtrl'
         }).state('customer-sign-up', {
             url: '/customer-registration',
-            templateUrl: 'app/registration/custReg.template.html',
-            controller: 'RegistrationCtrl',
+            templateUrl: 'app/registration/customer-registration.html',
+            controller: 'RegistrationController',
             controllerAs: 'regCtrl'
         }).state('restaurant-sign-up', {
             url: '/restaurant-registration',
-            templateUrl: 'app/registration/restReg.template.html',
-            controller: 'RegistrationCtrl',
+            templateUrl: 'app/registration/restaurant-registration.html',
+            controller: 'RegistrationController',
             controllerAs: 'regCtrl'
         })
 
@@ -289,77 +289,6 @@
 'use strict';
 
 (function () {
-  'use strict';
-
-  angular.module('waitrApp').controller('RegistrationCtrl', RegistrationCtrl);
-
-  RegistrationCtrl.$inject = ['authService', '$state', '$ionicPopup'];
-
-  function RegistrationCtrl(authService, $state, $ionicPopup) {
-    var regCtrl = this;
-
-    regCtrl.cust = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phone: ''
-    };
-    regCtrl.rest = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phone: '',
-      restaurantName: ''
-    };
-
-    regCtrl.register = register;
-
-    ///////////////
-
-    function register(data) {
-      authService.register(data).then(function (res) {
-        // console.log(res);
-        regCtrl.cust.firstName = '';
-        regCtrl.cust.lastName = '';
-        regCtrl.cust.email = '';
-        regCtrl.cust.password = '';
-        regCtrl.cust.phone = '';
-
-        regCtrl.rest.firstName = '';
-        regCtrl.rest.lastname = '';
-        regCtrl.rest.email = '';
-        regCtrl.rest.password = '';
-        regCtrl.rest.phone = '';
-        regCtrl.rest.restaurantName = '';
-
-        if (res.role === 'user') $state.go('customer.home');
-        if (res.role === 'restaurant') $state.go('restaurant.home');
-      }, function (res) {
-        // console.log('Registration Error: ' + res.data)
-        // var alertPopup = $ionicPopup.alert({
-        //   title: 'Registration failed!',
-        //   template: 'Error: ' + res
-        // });
-      });
-    }
-  }
-})();
-'use strict';
-
-(function () {
-  angular.module('waitrApp').controller('restaRestaurantCtrl', ['restaurantInfo', 'restaurantService', '$timeout', '$scope', restaAdminCtrl]);
-
-  function restaAdminCtrl(restaurantInfo, restaurantService, $timeout, $scope) {
-    var rrc = this;
-    rrc.currentUser = restaurantInfo.currentUser;
-    rrc.restaurant = restaurantInfo.restaurant[0];
-  }
-})();
-'use strict';
-
-(function () {
     'use strict';
 
     angular.module('waitrApp').controller('CustomerController', ['currentUser', CustomerController]);
@@ -376,9 +305,9 @@
 (function () {
     'use strict';
 
-    angular.module('waitrApp').controller('LoginController', ['authService', '$state', '$ionicPopup', LoginController]);
+    angular.module('waitrApp').controller('LoginController', ['authService', '$state', LoginController]);
 
-    function LoginController(authService, $state, $ionicPopup) {
+    function LoginController(authService, $state) {
         var vm = this;
 
         vm.credentials = {
@@ -399,6 +328,70 @@
             });
         };
     }
+})();
+'use strict';
+
+(function () {
+    'use strict';
+
+    angular.module('waitrApp').controller('RegistrationController', ['authService', '$state', RegistrationController]);
+
+    function RegistrationController(authService, $state) {
+        var vm = this;
+
+        vm.cust = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phone: ''
+        };
+        vm.rest = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phone: '',
+            restaurantName: ''
+        };
+
+        vm.register = function (data) {
+
+            authService.register(data).then(function (res) {
+                vm.cust.firstName = '';
+                vm.cust.lastName = '';
+                vm.cust.email = '';
+                vm.cust.password = '';
+                vm.cust.phone = '';
+
+                vm.rest.firstName = '';
+                vm.rest.lastname = '';
+                vm.rest.email = '';
+                vm.rest.password = '';
+                vm.rest.phone = '';
+                vm.rest.restaurantName = '';
+
+                if (res.role === 'user') {
+                    $state.go('customer.home');
+                }
+
+                if (res.role === 'restaurant') {
+                    $state.go('restaurant.home');
+                }
+            });
+        };
+    }
+})();
+'use strict';
+
+(function () {
+  angular.module('waitrApp').controller('restaRestaurantCtrl', ['restaurantInfo', 'restaurantService', '$timeout', '$scope', restaAdminCtrl]);
+
+  function restaAdminCtrl(restaurantInfo, restaurantService, $timeout, $scope) {
+    var rrc = this;
+    rrc.currentUser = restaurantInfo.currentUser;
+    rrc.restaurant = restaurantInfo.restaurant[0];
+  }
 })();
 'use strict';
 
@@ -727,6 +720,253 @@
       });
     };
   }
+})();
+'use strict';
+
+(function () {
+    angular.module('waitrApp').controller('CustomerHomeController', ['restaurantService', CustomerHomeController]);
+
+    function CustomerHomeController(restaurantService) {
+        var vm = this;
+
+        vm.reverse = false;
+
+        restaurantService.getRestaurants().then(function (restaurant) {
+            return vm.restaurantList = restaurant;
+        });
+    }
+})();
+'use strict';
+
+(function () {
+    angular.module('waitrApp').controller('custRestaurantMenuCtrl', ['restaurantService', '$stateParams', '$ionicHistory', '$state', custRestaurantMenuCtrl]);
+
+    function custRestaurantMenuCtrl(restaurantService, $stateParams, $ionicHistory, $state) {
+        var cmc = this;
+        cmc.restaurantId = $stateParams.restaurantId;
+        cmc.menuTitle = null;
+
+        restaurantService.getCurrentRestaurant(cmc.restaurantId).then(function (restaurant) {
+            cmc.restaurant = restaurant[0];
+            cmc.groupedMenu = _.groupBy(cmc.restaurant.menu, 'section');
+        });
+
+        cmc.goBack = function () {
+            $ionicHistory.goBack();
+        };
+
+        cmc.toggleSection = function (key) {
+            if (key === cmc.menuTitle) {
+                cmc.menuTitle = null;
+            } else {
+                cmc.menuTitle = key;
+            }
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    angular.module('waitrApp').controller('CustomerRestaurantController', ['restaurantService', 'userService', 'waitlistService', '$stateParams', '$ionicHistory', '$state', '$scope', CustomerRestaurantController]);
+
+    function CustomerRestaurantController(restaurantService, userService, waitlistService, $stateParams, $ionicHistory, $state, $scope) {
+
+        var vm = this;
+
+        vm.infoHoursToggle = true;
+        vm.restaurantId = $stateParams.restaurantId;
+        vm.currentUser = $scope.ccc.currentUser;
+        //console.log(vm.currentUser);
+
+        //we need to get the user again just in case they get added to a list
+        /*userService.currentUser(vm.currentUser._id).then(function(res) {
+         vm.currentUser = res[0];
+         //console.log(vm.currentUser);
+         })*/
+
+        restaurantService.getCurrentRestaurant(vm.restaurantId).then(function (restaurant) {
+            return vm.restaurant = restaurant[0];
+        });
+
+        waitlistService.getWaitlist(vm.restaurantId).then(function (res) {
+            return vm.customerEntries = res[0];
+        });
+
+        vm.userAddingToQ = function () {
+            waitlistService.addAnonToWaitlist(vm.currentUser, vm.restaurant.waitlist_id).then(function () {
+
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $state.go("restaurant.home");
+            });
+        };
+
+        vm.callTel = function () {
+            return window.location.href = 'tel:' + vm.restaurant.restaurantPhone;
+        };
+
+        vm.getWebsite = function () {
+            window.open(vm.restaurant.restaurantWebsite, '_system', 'location=yes');
+            return false;
+        };
+
+        vm.goBack = function () {
+            return $ionicHistory.goBack();
+        };
+
+        vm.infoHoursToggle = true;
+        vm.showOnClick = function (value) {
+            return vm.infoHoursToggle = value;
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    'use strict';
+
+    angular.module('waitrApp').controller('CustomerWaitlistConfirmController', ['$stateParams', '$scope', 'waitlistService', 'restaurantService', '$state', 'userService', '$ionicHistory', CustomerWaitlistConfirmController]);
+
+    function CustomerWaitlistConfirmController($stateParams, $scope, waitlistService, restaurantService, $state, userService, $ionicHistory) {
+
+        var vm = this,
+            currRest = $stateParams.restaurantId,
+            socket = io.connect('http://localhost:3000');
+
+        vm.currentUser = $scope.ccc.currentUser;
+
+        restaurantService.getCurrentRestaurant(currRest).then(function (data) {
+            return vm.currRestObj = data;
+        });
+
+        vm.userAddingToQ = function (firstname, lastname, partysize, phone, notes) {
+            var person = {
+                user_id: vm.currentUser._id,
+                firstName: firstname,
+                lastName: lastname,
+                partySize: partysize,
+                phone: phone,
+                notes: notes
+            };
+
+            waitlistService.addAnonToWaitlist(person, vm.currRestObj[0].waitlist_id).then(function (newPerson) {
+
+                socket.emit('newPerson', newPerson);
+
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                var waitlistId = {
+                    inWaitList: vm.currRestObj[0].waitlist_id
+                };
+
+                userService.updateUser(vm.currentUser._id, waitlistId).then(function () {
+                    $scope.ccc.currentUser.inWaitList = waitlistId.inWaitList;
+                    $state.go("customer.waitlist");
+                });
+            });
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    'use strict';
+
+    angular.module('waitrApp').controller('CustomerSettingsController', ['userService', '$state', '$scope', CustomerSettingsController]);
+
+    function CustomerSettingsController(userService, $state, $scope) {
+
+        var vm = this;
+
+        vm.currentUser = $scope.ccc.currentUser;
+        vm.firstName = vm.currentUser.firstName;
+        vm.lastName = vm.currentUser.lastName;
+        vm.phone = vm.currentUser.phone;
+        vm.email = vm.currentUser.email;
+
+        vm.updateUser = function (firstName, lastName, phone, email) {
+
+            var user = {
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone,
+                email: email
+            };
+
+            userService.updateUser(vm.currentUser._id, user).then(function (updateUser) {
+                $scope.ccc.currentUser = updateUser;
+                $state.go('customer.settings');
+            });
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    'use strict';
+
+    angular.module('waitrApp').controller('CustomerWaitlistController', ['userService', 'restaurantService', '$scope', 'waitlistService', '$ionicPopup', '$state', '$ionicHistory', CustomerWaitlistController]);
+
+    function CustomerWaitlistController(userService, restaurantService, $scope, waitlistService, $ionicPopup, $state, $ionicHistory) {
+
+        var vm = this;
+        var socket = io.connect('http://localhost:3000');
+
+        vm.currentUser = $scope.ccc.currentUser;
+
+        socket.on('newPersonAdded', function (data) {
+            vm.currentUser.inWaitList.list.push(data);
+            $scope.$apply();
+        });
+
+        socket.on('deletedPerson', function (data) {
+            if (vm.currentUser.inWaitList) {
+                vm.currentUser.inWaitList.list.splice(data.pos, 1);
+                $scope.$apply();
+            }
+        });
+
+        userService.currentUser(vm.currentUser._id).then(function (user) {
+            vm.currentUser = user[0];
+
+            restaurantService.getCurrentRestaurant(vm.currentUser.inWaitList.restaurant_id).then(function (data) {
+                return vm.restaurant = data[0];
+            });
+        });
+
+        vm.removeFromWaitlist = function () {
+            var list = vm.currentUser.inWaitList.list;
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].user_id == vm.currentUser._id) {
+                    waitlistService.removeFromWaitlist(list[i]._id, vm.currentUser.inWaitList._id).then(function (res) {
+                        $scope.ccc.currentUser.inWaitList = undefined;
+                        socket.emit('deletePerson', res);
+                        $ionicHistory.nextViewOptions({
+                            disableBack: true
+                        });
+                        $state.go("customer.home");
+                    });
+                }
+            }
+        };
+
+        vm.showRemovePopup = function () {
+            var confirmPopup = $ionicPopup.confirm({
+                title: "Remove from waitlist",
+                template: "WARNING: this will remove you from the list"
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                    vm.removeFromWaitlist();
+                }
+            });
+        };
+    }
 })();
 'use strict';
 
@@ -1088,251 +1328,4 @@
       restaurantService.updateRestaurant(rsc.restaurant._id, restaurant);
     };
   }
-})();
-'use strict';
-
-(function () {
-    angular.module('waitrApp').controller('CustomerHomeController', ['restaurantService', CustomerHomeController]);
-
-    function CustomerHomeController(restaurantService) {
-        var vm = this;
-
-        vm.reverse = false;
-
-        restaurantService.getRestaurants().then(function (restaurant) {
-            return vm.restaurantList = restaurant;
-        });
-    }
-})();
-'use strict';
-
-(function () {
-    angular.module('waitrApp').controller('custRestaurantMenuCtrl', ['restaurantService', '$stateParams', '$ionicHistory', '$state', custRestaurantMenuCtrl]);
-
-    function custRestaurantMenuCtrl(restaurantService, $stateParams, $ionicHistory, $state) {
-        var cmc = this;
-        cmc.restaurantId = $stateParams.restaurantId;
-        cmc.menuTitle = null;
-
-        restaurantService.getCurrentRestaurant(cmc.restaurantId).then(function (restaurant) {
-            cmc.restaurant = restaurant[0];
-            cmc.groupedMenu = _.groupBy(cmc.restaurant.menu, 'section');
-        });
-
-        cmc.goBack = function () {
-            $ionicHistory.goBack();
-        };
-
-        cmc.toggleSection = function (key) {
-            if (key === cmc.menuTitle) {
-                cmc.menuTitle = null;
-            } else {
-                cmc.menuTitle = key;
-            }
-        };
-    }
-})();
-'use strict';
-
-(function () {
-    angular.module('waitrApp').controller('CustomerRestaurantController', ['restaurantService', 'userService', 'waitlistService', '$stateParams', '$ionicHistory', '$state', '$scope', CustomerRestaurantController]);
-
-    function CustomerRestaurantController(restaurantService, userService, waitlistService, $stateParams, $ionicHistory, $state, $scope) {
-
-        var vm = this;
-
-        vm.infoHoursToggle = true;
-        vm.restaurantId = $stateParams.restaurantId;
-        vm.currentUser = $scope.ccc.currentUser;
-        //console.log(vm.currentUser);
-
-        //we need to get the user again just in case they get added to a list
-        /*userService.currentUser(vm.currentUser._id).then(function(res) {
-         vm.currentUser = res[0];
-         //console.log(vm.currentUser);
-         })*/
-
-        restaurantService.getCurrentRestaurant(vm.restaurantId).then(function (restaurant) {
-            return vm.restaurant = restaurant[0];
-        });
-
-        waitlistService.getWaitlist(vm.restaurantId).then(function (res) {
-            return vm.customerEntries = res[0];
-        });
-
-        vm.userAddingToQ = function () {
-            waitlistService.addAnonToWaitlist(vm.currentUser, vm.restaurant.waitlist_id).then(function () {
-
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                $state.go("restaurant.home");
-            });
-        };
-
-        vm.callTel = function () {
-            return window.location.href = 'tel:' + vm.restaurant.restaurantPhone;
-        };
-
-        vm.getWebsite = function () {
-            window.open(vm.restaurant.restaurantWebsite, '_system', 'location=yes');
-            return false;
-        };
-
-        vm.goBack = function () {
-            return $ionicHistory.goBack();
-        };
-
-        vm.infoHoursToggle = true;
-        vm.showOnClick = function (value) {
-            return vm.infoHoursToggle = value;
-        };
-    }
-})();
-'use strict';
-
-(function () {
-    'use strict';
-
-    angular.module('waitrApp').controller('CustomerWaitlistConfirmController', ['$stateParams', '$scope', 'waitlistService', 'restaurantService', '$state', 'userService', '$ionicHistory', CustomerWaitlistConfirmController]);
-
-    function CustomerWaitlistConfirmController($stateParams, $scope, waitlistService, restaurantService, $state, userService, $ionicHistory) {
-
-        var vm = this,
-            currRest = $stateParams.restaurantId,
-            socket = io.connect('http://localhost:3000');
-
-        vm.currentUser = $scope.ccc.currentUser;
-
-        restaurantService.getCurrentRestaurant(currRest).then(function (data) {
-            return vm.currRestObj = data;
-        });
-
-        vm.userAddingToQ = function (firstname, lastname, partysize, phone, notes) {
-            var person = {
-                user_id: vm.currentUser._id,
-                firstName: firstname,
-                lastName: lastname,
-                partySize: partysize,
-                phone: phone,
-                notes: notes
-            };
-
-            waitlistService.addAnonToWaitlist(person, vm.currRestObj[0].waitlist_id).then(function (newPerson) {
-
-                socket.emit('newPerson', newPerson);
-
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                var waitlistId = {
-                    inWaitList: vm.currRestObj[0].waitlist_id
-                };
-
-                userService.updateUser(vm.currentUser._id, waitlistId).then(function () {
-                    $scope.ccc.currentUser.inWaitList = waitlistId.inWaitList;
-                    $state.go("customer.waitlist");
-                });
-            });
-        };
-    }
-})();
-'use strict';
-
-(function () {
-    'use strict';
-
-    angular.module('waitrApp').controller('CustomerSettingsController', ['userService', '$state', '$scope', CustomerSettingsController]);
-
-    function CustomerSettingsController(userService, $state, $scope) {
-
-        var vm = this;
-
-        vm.currentUser = $scope.ccc.currentUser;
-        vm.firstName = vm.currentUser.firstName;
-        vm.lastName = vm.currentUser.lastName;
-        vm.phone = vm.currentUser.phone;
-        vm.email = vm.currentUser.email;
-
-        vm.updateUser = function (firstName, lastName, phone, email) {
-
-            var user = {
-                firstName: firstName,
-                lastName: lastName,
-                phone: phone,
-                email: email
-            };
-
-            userService.updateUser(vm.currentUser._id, user).then(function (updateUser) {
-                $scope.ccc.currentUser = updateUser;
-                $state.go('customer.settings');
-            });
-        };
-    }
-})();
-'use strict';
-
-(function () {
-    'use strict';
-
-    angular.module('waitrApp').controller('CustomerWaitlistController', ['userService', 'restaurantService', '$scope', 'waitlistService', '$ionicPopup', '$state', '$ionicHistory', CustomerWaitlistController]);
-
-    function CustomerWaitlistController(userService, restaurantService, $scope, waitlistService, $ionicPopup, $state, $ionicHistory) {
-
-        var vm = this;
-        var socket = io.connect('http://localhost:3000');
-
-        vm.currentUser = $scope.ccc.currentUser;
-
-        socket.on('newPersonAdded', function (data) {
-            vm.currentUser.inWaitList.list.push(data);
-            $scope.$apply();
-        });
-
-        socket.on('deletedPerson', function (data) {
-            if (vm.currentUser.inWaitList) {
-                vm.currentUser.inWaitList.list.splice(data.pos, 1);
-                $scope.$apply();
-            }
-        });
-
-        userService.currentUser(vm.currentUser._id).then(function (user) {
-            vm.currentUser = user[0];
-
-            restaurantService.getCurrentRestaurant(vm.currentUser.inWaitList.restaurant_id).then(function (data) {
-                return vm.restaurant = data[0];
-            });
-        });
-
-        vm.removeFromWaitlist = function () {
-            var list = vm.currentUser.inWaitList.list;
-            for (var i = 0; i < list.length; i++) {
-                if (list[i].user_id == vm.currentUser._id) {
-                    waitlistService.removeFromWaitlist(list[i]._id, vm.currentUser.inWaitList._id).then(function (res) {
-                        $scope.ccc.currentUser.inWaitList = undefined;
-                        socket.emit('deletePerson', res);
-                        $ionicHistory.nextViewOptions({
-                            disableBack: true
-                        });
-                        $state.go("customer.home");
-                    });
-                }
-            }
-        };
-
-        vm.showRemovePopup = function () {
-            var confirmPopup = $ionicPopup.confirm({
-                title: "Remove from waitlist",
-                template: "WARNING: this will remove you from the list"
-            });
-
-            confirmPopup.then(function (res) {
-                if (res) {
-                    vm.removeFromWaitlist();
-                }
-            });
-        };
-    }
 })();

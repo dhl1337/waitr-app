@@ -1,60 +1,55 @@
 (function () {
-'use strict';
+    'use strict';
 
-angular.module('waitrApp')
-  .controller('RegistrationCtrl', RegistrationCtrl);
+    angular
+        .module('waitrApp')
+        .controller('RegistrationController', ['authService', '$state', RegistrationController]);
 
-  RegistrationCtrl.$inject = ['authService', '$state', '$ionicPopup'];
+    function RegistrationController(authService, $state) {
+        var vm = this;
 
-  function RegistrationCtrl(authService, $state, $ionicPopup) {
-    var regCtrl = this;
+        vm.cust = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phone: ''
+        };
+        vm.rest = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phone: '',
+            restaurantName: ''
+        };
 
-    regCtrl.cust = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phone: ''
-    };
-    regCtrl.rest = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phone: '',
-      restaurantName: ''
-    };
+        vm.register = (data) => {
 
-    regCtrl.register = register;
+            authService.register(data).then(res => {
+                vm.cust.firstName = '';
+                vm.cust.lastName = '';
+                vm.cust.email = '';
+                vm.cust.password = '';
+                vm.cust.phone = '';
 
-    ///////////////
+                vm.rest.firstName = '';
+                vm.rest.lastname = '';
+                vm.rest.email = '';
+                vm.rest.password = '';
+                vm.rest.phone = '';
+                vm.rest.restaurantName = '';
 
-    function register(data) {
-      authService.register(data).then(function(res) {
-        // console.log(res);
-        regCtrl.cust.firstName = '';
-        regCtrl.cust.lastName = '';
-        regCtrl.cust.email = '';
-        regCtrl.cust.password = '';
-        regCtrl.cust.phone = '';
+                if (res.role === 'user') {
+                    $state.go('customer.home');
+                }
 
-        regCtrl.rest.firstName = '';
-        regCtrl.rest.lastname = '';
-        regCtrl.rest.email = '';
-        regCtrl.rest.password = '';
-        regCtrl.rest.phone = '';
-        regCtrl.rest.restaurantName = '';
+                if (res.role === 'restaurant') {
+                    $state.go('restaurant.home');
+                }
 
-        if (res.role === 'user') $state.go('customer.home');
-        if (res.role === 'restaurant') $state.go('restaurant.home');
-      }, function(res) {
-        // console.log('Registration Error: ' + res.data)
-        // var alertPopup = $ionicPopup.alert({
-        //   title: 'Registration failed!',
-        //   template: 'Error: ' + res
-        // });
-      });
+            });
+        }
+
     }
-
-  }
 })();
