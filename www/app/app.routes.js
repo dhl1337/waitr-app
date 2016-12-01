@@ -51,8 +51,8 @@
             })
             .state('customer.home', {
                 url: '/home',
-                templateUrl: './app/customer/home/custHome.html',
-                controller: 'custHomeCtrl',
+                templateUrl: './app/customer/home/customer-home.html',
+                controller: 'CustomerHomeController',
                 controllerAs: 'chc'
             })
 
