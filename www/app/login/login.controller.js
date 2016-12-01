@@ -1,38 +1,32 @@
 (function () {
-'use strict';
+    'use strict';
 
-angular.module('waitrApp')
-  .controller('LoginCtrl', LoginCtrl);
+    angular
+        .module('waitrApp')
+        .controller('LoginController', ['authService', '$state', '$ionicPopup', LoginController]);
 
-  LoginCtrl.$inject = ['authService', '$state', '$ionicPopup'];
 
-  function LoginCtrl(authService, $state, $ionicPopup) {
-    var logCtrl = this;
+    function LoginController(authService, $state, $ionicPopup) {
+        var vm = this;
 
-    logCtrl.credentials = {
-      email: '',
-      password: ''
-    };
+        vm.credentials = {
+            email: '',
+            password: ''
+        };
 
-    logCtrl.login = login;
+        vm.login = credentials => {
+            authService.login(credentials).then((user) => {
+                vm.credentials.email = '';
+                vm.credentials.password = '';
+                if (user.role === 'user') {
+                    $state.go('customer.home');
+                }
+                if (user.role === 'restaurant') {
+                    $state.go('restaurant.home');
+                }
+            });
+        }
 
-    ///////////////
 
-    function login(credentials) {
-      authService.login(credentials).then(function(user) {
-        logCtrl.credentials.email = '';
-        logCtrl.credentials.password = '';
-        if (user.role === 'user') $state.go('customer.home');
-        if (user.role === 'restaurant') $state.go('restaurant.home');
-      }, function(res) {
-        console.log('Login error: ' + res.data)
-        // var alertPopup = $ionicPopup.alert({
-        //   title: 'Login failed!',
-        //   template: 'Error: ' + res
-        // });
-      });
     }
-
-
-  }
 })();

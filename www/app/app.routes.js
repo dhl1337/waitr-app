@@ -15,8 +15,8 @@
         // LOGIN - REGISTER ROUTES
             .state('login', {
                 url: '/login',
-                templateUrl: 'app/login/login.template.html',
-                controller: 'LoginCtrl',
+                templateUrl: 'app/login/login.html',
+                controller: 'LoginController',
                 controllerAs: 'logCtrl'
             })
             .state('customer-sign-up', {
