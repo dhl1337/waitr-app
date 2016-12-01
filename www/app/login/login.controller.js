@@ -3,10 +3,10 @@
 
     angular
         .module('waitrApp')
-        .controller('LoginController', ['authService', '$state', '$ionicPopup', LoginController]);
+        .controller('LoginController', ['authService', '$state', LoginController]);
 
 
-    function LoginController(authService, $state, $ionicPopup) {
+    function LoginController(authService, $state) {
         var vm = this;
 
         vm.credentials = {
