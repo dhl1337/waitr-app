@@ -59,14 +59,14 @@
             //restaurant called at home, but not home child
             .state('customer.restaurant', {
                 url: '/home/restaurant/:restaurantId',
-                templateUrl: './app/customer/restaurant/custRestaurant.html',
-                controller: 'custRestaurantCtrl',
+                templateUrl: './app/customer/restaurant/customer-restaurant.html',
+                controller: 'CustomerRestaurantController',
                 controllerAs: 'crc'
             })
             .state('customer.waitlistconfirm', {
                 url: '/home/restaurant/:restaurantId/waitlist-confirm',
-                templateUrl: './app/customer/restaurant/custRestaurantConfirm.html',
-                controller: 'custWaitListConfirmCtrl',
+                templateUrl: './app/customer/restaurant/customer-waitlist-confirm.html',
+                controller: 'CustomerWaitlistConfirmController',
                 controllerAs: 'cwlc'
             })
             .state('customer.settings', {
@@ -77,8 +77,8 @@
             })
             .state('customer.menu', {
                 url: '/home/restaurant/:restaurantId/menu',
-                templateUrl: './app/customer/menu/custRestaurantMenu.html',
-                controller: 'custRestaurantMenuCtrl',
+                templateUrl: './app/customer/menu/customer-menu.html',
+                controller: 'CustomerMenuController',
                 controllerAs: 'cmc',
             })
             //called in settings, but still customer child
