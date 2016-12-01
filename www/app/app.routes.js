@@ -71,8 +71,8 @@
             })
             .state('customer.settings', {
                 url: '/settings',
-                templateUrl: './app/customer/settings/custSettings.html',
-                controller: 'custSettingsCtrl',
+                templateUrl: './app/customer/settings/customer-settings.html',
+                controller: 'CustomerSettingsController',
                 controllerAs: 'csc'
             })
             .state('customer.menu', {
@@ -84,14 +84,8 @@
             //called in settings, but still customer child
             .state('customer.editContactInfo', {
                 url: '/settings/edit-contact-info',
-                templateUrl: './app/customer/settings/custEditContactInfo.html',
-                controller: 'custSettingsCtrl',
-                controllerAs: 'csc'
-            })
-            .state('customer.paymentMethods', {
-                url: '/settings/payment-methods',
-                templateUrl: './app/customer/settings/custPaymentMethods.html',
-                controller: 'custSettingsCtrl',
+                templateUrl: './app/customer/settings/customer-edit-contact.html',
+                controller: 'CustomerSettingsController',
                 controllerAs: 'csc'
             })
             .state('customer.waitlist', {
