@@ -36,8 +36,8 @@
             .state('customer', {  //parent, sidenav
                 url: '/customer',
                 abstract: true,
-                templateUrl: './app/customer/custCustomer.html',
-                controller: 'custCustomerCtrl',
+                templateUrl: './app/customer/customer.html',
+                controller: 'CustomerController',
                 controllerAs: 'ccc',
                 resolve: {
                     currentUser: function (authService, $state) {
@@ -90,8 +90,8 @@
             })
             .state('customer.waitlist', {
                 url: '/waitlist',
-                templateUrl: './app/customer/waitlist/custWaitlist.html',
-                controller: 'custWaitlistCtrl',
+                templateUrl: './app/customer/waitlist/customer-waitlist.html',
+                controller: 'CustomerWaitlistController',
                 controllerAs: 'cwc'
             })
 

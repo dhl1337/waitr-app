@@ -1,4 +1,5 @@
 (function () {
+    'use strict';
     angular
         .module('waitrApp')
         .controller('CustomerWaitlistController', ['userService', 'restaurantService', '$scope', 'waitlistService', '$ionicPopup', '$state', '$ionicHistory', CustomerWaitlistController]);
@@ -28,7 +29,7 @@
             restaurantService.getCurrentRestaurant(vm.currentUser.inWaitList.restaurant_id).then((data) => vm.restaurant = data[0]);
         });
 
-        vm.removeFromWaitlist = function () {
+        vm.removeFromWaitlist = () => {
             let list = vm.currentUser.inWaitList.list;
             for (let i = 0; i < list.length; i++) {
                 if (list[i].user_id == vm.currentUser._id) {

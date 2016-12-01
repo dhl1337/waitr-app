@@ -197,8 +197,8 @@
             controllerAs: 'csc'
         }).state('customer.waitlist', {
             url: '/waitlist',
-            templateUrl: './app/customer/waitlist/custWaitlist.html',
-            controller: 'custWaitlistCtrl',
+            templateUrl: './app/customer/waitlist/customer-waitlist.html',
+            controller: 'CustomerWaitlistController',
             controllerAs: 'cwc'
         })
 
@@ -302,66 +302,6 @@
 (function () {
   'use strict';
 
-  angular.module('waitrApp').controller('RegistrationCtrl', RegistrationCtrl);
-
-  RegistrationCtrl.$inject = ['authService', '$state', '$ionicPopup'];
-
-  function RegistrationCtrl(authService, $state, $ionicPopup) {
-    var regCtrl = this;
-
-    regCtrl.cust = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phone: ''
-    };
-    regCtrl.rest = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      phone: '',
-      restaurantName: ''
-    };
-
-    regCtrl.register = register;
-
-    ///////////////
-
-    function register(data) {
-      authService.register(data).then(function (res) {
-        // console.log(res);
-        regCtrl.cust.firstName = '';
-        regCtrl.cust.lastName = '';
-        regCtrl.cust.email = '';
-        regCtrl.cust.password = '';
-        regCtrl.cust.phone = '';
-
-        regCtrl.rest.firstName = '';
-        regCtrl.rest.lastname = '';
-        regCtrl.rest.email = '';
-        regCtrl.rest.password = '';
-        regCtrl.rest.phone = '';
-        regCtrl.rest.restaurantName = '';
-
-        if (res.role === 'user') $state.go('customer.home');
-        if (res.role === 'restaurant') $state.go('restaurant.home');
-      }, function (res) {
-        // console.log('Registration Error: ' + res.data)
-        // var alertPopup = $ionicPopup.alert({
-        //   title: 'Registration failed!',
-        //   template: 'Error: ' + res
-        // });
-      });
-    }
-  }
-})();
-'use strict';
-
-(function () {
-  'use strict';
-
   angular.module('waitrApp').controller('LoginCtrl', LoginCtrl);
 
   LoginCtrl.$inject = ['authService', '$state', '$ionicPopup'];
@@ -392,17 +332,6 @@
         // });
       });
     }
-  }
-})();
-'use strict';
-
-(function () {
-  angular.module('waitrApp').controller('restaRestaurantCtrl', ['restaurantInfo', 'restaurantService', '$timeout', '$scope', restaAdminCtrl]);
-
-  function restaAdminCtrl(restaurantInfo, restaurantService, $timeout, $scope) {
-    var rrc = this;
-    rrc.currentUser = restaurantInfo.currentUser;
-    rrc.restaurant = restaurantInfo.restaurant[0];
   }
 })();
 'use strict';
@@ -736,6 +665,77 @@
 'use strict';
 
 (function () {
+  angular.module('waitrApp').controller('restaRestaurantCtrl', ['restaurantInfo', 'restaurantService', '$timeout', '$scope', restaAdminCtrl]);
+
+  function restaAdminCtrl(restaurantInfo, restaurantService, $timeout, $scope) {
+    var rrc = this;
+    rrc.currentUser = restaurantInfo.currentUser;
+    rrc.restaurant = restaurantInfo.restaurant[0];
+  }
+})();
+'use strict';
+
+(function () {
+  'use strict';
+
+  angular.module('waitrApp').controller('RegistrationCtrl', RegistrationCtrl);
+
+  RegistrationCtrl.$inject = ['authService', '$state', '$ionicPopup'];
+
+  function RegistrationCtrl(authService, $state, $ionicPopup) {
+    var regCtrl = this;
+
+    regCtrl.cust = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      phone: ''
+    };
+    regCtrl.rest = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      phone: '',
+      restaurantName: ''
+    };
+
+    regCtrl.register = register;
+
+    ///////////////
+
+    function register(data) {
+      authService.register(data).then(function (res) {
+        // console.log(res);
+        regCtrl.cust.firstName = '';
+        regCtrl.cust.lastName = '';
+        regCtrl.cust.email = '';
+        regCtrl.cust.password = '';
+        regCtrl.cust.phone = '';
+
+        regCtrl.rest.firstName = '';
+        regCtrl.rest.lastname = '';
+        regCtrl.rest.email = '';
+        regCtrl.rest.password = '';
+        regCtrl.rest.phone = '';
+        regCtrl.rest.restaurantName = '';
+
+        if (res.role === 'user') $state.go('customer.home');
+        if (res.role === 'restaurant') $state.go('restaurant.home');
+      }, function (res) {
+        // console.log('Registration Error: ' + res.data)
+        // var alertPopup = $ionicPopup.alert({
+        //   title: 'Registration failed!',
+        //   template: 'Error: ' + res
+        // });
+      });
+    }
+  }
+})();
+'use strict';
+
+(function () {
     angular.module('waitrApp').controller('CustomerHomeController', ['restaurantService', CustomerHomeController]);
 
     function CustomerHomeController(restaurantService) {
@@ -746,34 +746,6 @@
         restaurantService.getRestaurants().then(function (restaurant) {
             return vm.restaurantList = restaurant;
         });
-    }
-})();
-'use strict';
-
-(function () {
-    angular.module('waitrApp').controller('custRestaurantMenuCtrl', ['restaurantService', '$stateParams', '$ionicHistory', '$state', custRestaurantMenuCtrl]);
-
-    function custRestaurantMenuCtrl(restaurantService, $stateParams, $ionicHistory, $state) {
-        var cmc = this;
-        cmc.restaurantId = $stateParams.restaurantId;
-        cmc.menuTitle = null;
-
-        restaurantService.getCurrentRestaurant(cmc.restaurantId).then(function (restaurant) {
-            cmc.restaurant = restaurant[0];
-            cmc.groupedMenu = _.groupBy(cmc.restaurant.menu, 'section');
-        });
-
-        cmc.goBack = function () {
-            $ionicHistory.goBack();
-        };
-
-        cmc.toggleSection = function (key) {
-            if (key === cmc.menuTitle) {
-                cmc.menuTitle = null;
-            } else {
-                cmc.menuTitle = key;
-            }
-        };
     }
 })();
 'use strict';
@@ -886,63 +858,30 @@
 'use strict';
 
 (function () {
-  angular.module('waitrApp').controller('custWaitlistCtrl', ['userService', 'restaurantService', '$timeout', '$scope', 'waitlistService', '$ionicPopup', '$state', '$ionicHistory', custWaitlistCtrl]);
+    angular.module('waitrApp').controller('custRestaurantMenuCtrl', ['restaurantService', '$stateParams', '$ionicHistory', '$state', custRestaurantMenuCtrl]);
 
-  function custWaitlistCtrl(userService, restaurantService, $timeout, $scope, waitlistService, $ionicPopup, $state, $ionicHistory) {
-    var cwc = this;
-    var socket = io.connect('http://localhost:3000');
+    function custRestaurantMenuCtrl(restaurantService, $stateParams, $ionicHistory, $state) {
+        var cmc = this;
+        cmc.restaurantId = $stateParams.restaurantId;
+        cmc.menuTitle = null;
 
-    cwc.currentUser = $scope.ccc.currentUser;
+        restaurantService.getCurrentRestaurant(cmc.restaurantId).then(function (restaurant) {
+            cmc.restaurant = restaurant[0];
+            cmc.groupedMenu = _.groupBy(cmc.restaurant.menu, 'section');
+        });
 
-    socket.on('newPersonAdded', function (data) {
-      cwc.currentUser.inWaitList.list.push(data);
-      $scope.$apply();
-    });
+        cmc.goBack = function () {
+            $ionicHistory.goBack();
+        };
 
-    socket.on('deletedPerson', function (data) {
-      if (cwc.currentUser.inWaitList) {
-        cwc.currentUser.inWaitList.list.splice(data.pos, 1);
-        $scope.$apply();
-      }
-    });
-
-    userService.currentUser(cwc.currentUser._id).then(function (user) {
-      cwc.currentUser = user[0];
-
-      restaurantService.getCurrentRestaurant(cwc.currentUser.inWaitList.restaurant_id).then(function (data) {
-        cwc.restaurant = data[0];
-      });
-    });
-
-    cwc.removeFromWaitlist = function () {
-      var list = cwc.currentUser.inWaitList.list;
-      for (var i = 0; i < list.length; i++) {
-        if (list[i].user_id == cwc.currentUser._id) {
-          waitlistService.removeFromWaitlist(list[i]._id, cwc.currentUser.inWaitList._id).then(function (res) {
-            $scope.ccc.currentUser.inWaitList = undefined;
-            socket.emit('deletePerson', res);
-            $ionicHistory.nextViewOptions({
-              disableBack: true
-            });
-            $state.go("customer.home");
-          });
-        }
-      }
-    };
-
-    cwc.showRemovePopup = function () {
-      var confirmPopup = $ionicPopup.confirm({
-        title: "Remove from waitlist",
-        template: "WARNING: this will remove you from the list"
-      });
-
-      confirmPopup.then(function (res) {
-        if (res) {
-          cwc.removeFromWaitlist();
-        } else {}
-      });
-    };
-  }
+        cmc.toggleSection = function (key) {
+            if (key === cmc.menuTitle) {
+                cmc.menuTitle = null;
+            } else {
+                cmc.menuTitle = key;
+            }
+        };
+    }
 })();
 'use strict';
 
@@ -962,15 +901,81 @@
         vm.email = vm.currentUser.email;
 
         vm.updateUser = function (firstName, lastName, phone, email) {
+
             var user = {
                 firstName: firstName,
                 lastName: lastName,
                 phone: phone,
                 email: email
             };
+
             userService.updateUser(vm.currentUser._id, user).then(function (updateUser) {
                 $scope.ccc.currentUser = updateUser;
                 $state.go('customer.settings');
+            });
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    'use strict';
+
+    angular.module('waitrApp').controller('CustomerWaitlistController', ['userService', 'restaurantService', '$scope', 'waitlistService', '$ionicPopup', '$state', '$ionicHistory', CustomerWaitlistController]);
+
+    function CustomerWaitlistController(userService, restaurantService, $scope, waitlistService, $ionicPopup, $state, $ionicHistory) {
+
+        var vm = this;
+        var socket = io.connect('http://localhost:3000');
+
+        vm.currentUser = $scope.ccc.currentUser;
+
+        socket.on('newPersonAdded', function (data) {
+            vm.currentUser.inWaitList.list.push(data);
+            $scope.$apply();
+        });
+
+        socket.on('deletedPerson', function (data) {
+            if (vm.currentUser.inWaitList) {
+                vm.currentUser.inWaitList.list.splice(data.pos, 1);
+                $scope.$apply();
+            }
+        });
+
+        userService.currentUser(vm.currentUser._id).then(function (user) {
+            vm.currentUser = user[0];
+
+            restaurantService.getCurrentRestaurant(vm.currentUser.inWaitList.restaurant_id).then(function (data) {
+                return vm.restaurant = data[0];
+            });
+        });
+
+        vm.removeFromWaitlist = function () {
+            var list = vm.currentUser.inWaitList.list;
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].user_id == vm.currentUser._id) {
+                    waitlistService.removeFromWaitlist(list[i]._id, vm.currentUser.inWaitList._id).then(function (res) {
+                        $scope.ccc.currentUser.inWaitList = undefined;
+                        socket.emit('deletePerson', res);
+                        $ionicHistory.nextViewOptions({
+                            disableBack: true
+                        });
+                        $state.go("customer.home");
+                    });
+                }
+            }
+        };
+
+        vm.showRemovePopup = function () {
+            var confirmPopup = $ionicPopup.confirm({
+                title: "Remove from waitlist",
+                template: "WARNING: this will remove you from the list"
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                    vm.removeFromWaitlist();
+                }
             });
         };
     }
