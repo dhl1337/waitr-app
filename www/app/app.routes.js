@@ -131,14 +131,14 @@
             //called in restaHome, but still restaurant child
             .state('restaurant.addPerson', {
                 url: '/home/add-person',
-                templateUrl: './app/restaurant/restaHome/restaAddPerson.html',
-                controller: 'restaHomeCtrl',
+                templateUrl: './app/restaurant/home/restaurant-add-person.html',
+                controller: 'RestaurantHomeController',
                 controllerAs: 'rhc'
             })
             .state('restaurant.editPerson', {
                 url: '/home/edit-person/:waitlist/:person',
-                templateUrl: './app/restaurant/restaHome/restaEditPerson.html',
-                controller: 'restaEditCtrl',
+                templateUrl: './app/restaurant/home/restaurant-edit-person.html',
+                controller: 'RestaurantEditController',
                 controllerAs: 'rec'
             })
 
@@ -157,33 +157,33 @@
             })
             .state('restaurant.settings', {
                 url: '/settings',
-                templateUrl: './app/restaurant/restaSettings/restaSettings.html',
-                controller: 'restaSettingsCtrl',
+                templateUrl: './app/restaurant/settings/restaurant-settings.html',
+                controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
             //called in restaSettings, but still restaurant child
             .state('restaurant.editInfo', {
                 url: '/settings/edit-Info',
-                templateUrl: './app/restaurant/restaSettings/restaEditInfo.html',
-                controller: 'restaSettingsCtrl',
+                templateUrl: './app/restaurant/settings/restaurant-edit-info.html',
+                controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
             .state('restaurant.editContact', {
                 url: '/settings/edit-contact',
-                templateUrl: './app/restaurant/restaSettings/restaEditContact.html',
-                controller: 'restaSettingsCtrl',
+                templateUrl: './app/restaurant/settings/restaurant-edit-contact.html',
+                controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
             .state('restaurant.editMenu', {
                 url: '/settings/edit-menu',
-                templateUrl: './app/restaurant/restaEditMenu/restaEditMenu.html',
-                controller: 'restaEditMenuCtrl',
+                templateUrl: './app/restaurant/settings/restaurant-edit-menu.html',
+                controller: 'RestaurantEditMenuController',
                 controllerAs: 'remc',
             })
             .state('restaurant.editHours', {
                 url: '/settings/edit-hours',
-                templateUrl: './app/restaurant/restaSettings/restaEditHours.html',
-                controller: 'restaSettingsCtrl',
+                templateUrl: './app/restaurant/settings/restaurant-edit-hours.html',
+                controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             });
     }
