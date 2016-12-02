@@ -99,12 +99,12 @@
             .state('restaurant', {
                 url: '/restaurant',
                 abstract: true,
-                templateUrl: './app/restaurant/restaRestaurant.html',
-                controller: 'restaRestaurantCtrl',
+                templateUrl: './app/restaurant/restaurant.html',
+                controller: 'RestaurantController',
                 controllerAs: 'rrc',
                 resolve: {
-                    restaurantInfo: function (authService, restaurantService, $state) {
-                        var user = authService.getUser();
+                    restaurantInfo(authService, restaurantService, $state) {
+                        const user = authService.getUser();
                         if (!user) {
                             return $state.go('login');
                         }
@@ -112,7 +112,7 @@
                             return $state.go('login');
                         }
                         return restaurantService.getCurrentRestaurant(user.restaurant_id)
-                            .then(function (restaurant) {
+                            .then((restaurant) => {
                                 return {
                                     currentUser: user,
                                     restaurant: restaurant
@@ -123,8 +123,8 @@
             })
             .state('restaurant.home', {
                 url: '/home',
-                templateUrl: './app/restaurant/restaHome/restaHome.html',
-                controller: 'restaHomeCtrl',
+                templateUrl: './app/restaurant/home/home.html',
+                controller: 'RestaurantHomeController',
                 controllerAs: 'rhc'
             })
 
