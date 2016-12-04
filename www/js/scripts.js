@@ -219,6 +219,8 @@
                         return $state.go('login');
                     }
                     return restaurantService.getCurrentRestaurant(user.restaurant_id).then(function (restaurant) {
+                        console.log('user', user);
+                        console.log('restaurant', restaurant);
                         return {
                             currentUser: user,
                             restaurant: restaurant
@@ -228,7 +230,7 @@
             }
         }).state('restaurant.home', {
             url: '/home',
-            templateUrl: './app/restaurant/home/home.html',
+            templateUrl: './app/restaurant/home/restaurant-home.html',
             controller: 'RestaurantHomeController',
             controllerAs: 'rhc'
         })
@@ -246,16 +248,9 @@
             controllerAs: 'rec'
         }).state('restaurant.profile', {
             url: '/profile',
-            templateUrl: './app/restaurant/restaProfile/restaProfile.html',
-            controller: 'restaProfileCtrl',
+            templateUrl: './app/restaurant/profile/restaurant-profile.html',
+            controller: 'RestaurantProfileController',
             controllerAs: 'rpc'
-        })
-        //not child of profile, but called by profile
-        .state('restaurant.menu', {
-            url: '/profile/menu',
-            templateUrl: './app/restaurant/restaMenu/restaMenu.html',
-            controller: 'restaMenuCtrl',
-            controllerAs: 'rmc'
         }).state('restaurant.settings', {
             url: '/settings',
             templateUrl: './app/restaurant/settings/restaurant-settings.html',
@@ -273,11 +268,6 @@
             templateUrl: './app/restaurant/settings/restaurant-edit-contact.html',
             controller: 'RestaurantSettingsController',
             controllerAs: 'rsc'
-        }).state('restaurant.editMenu', {
-            url: '/settings/edit-menu',
-            templateUrl: './app/restaurant/settings/restaurant-edit-menu.html',
-            controller: 'RestaurantEditMenuController',
-            controllerAs: 'remc'
         }).state('restaurant.editHours', {
             url: '/settings/edit-hours',
             templateUrl: './app/restaurant/settings/restaurant-edit-hours.html',
@@ -298,35 +288,6 @@
         var vm = this;
 
         vm.currentUser = currentUser;
-    }
-})();
-'use strict';
-
-(function () {
-    'use strict';
-
-    angular.module('waitrApp').controller('LoginController', ['authService', '$state', LoginController]);
-
-    function LoginController(authService, $state) {
-        var vm = this;
-
-        vm.credentials = {
-            email: '',
-            password: ''
-        };
-
-        vm.login = function (credentials) {
-            authService.login(credentials).then(function (user) {
-                vm.credentials.email = '';
-                vm.credentials.password = '';
-                if (user.role === 'user') {
-                    $state.go('customer.home');
-                }
-                if (user.role === 'restaurant') {
-                    $state.go('restaurant.home');
-                }
-            });
-        };
     }
 })();
 'use strict';
@@ -376,6 +337,35 @@
                 }
 
                 if (res.role === 'restaurant') {
+                    $state.go('restaurant.home');
+                }
+            });
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    'use strict';
+
+    angular.module('waitrApp').controller('LoginController', ['authService', '$state', LoginController]);
+
+    function LoginController(authService, $state) {
+        var vm = this;
+
+        vm.credentials = {
+            email: '',
+            password: ''
+        };
+
+        vm.login = function (credentials) {
+            authService.login(credentials).then(function (user) {
+                vm.credentials.email = '';
+                vm.credentials.password = '';
+                if (user.role === 'user') {
+                    $state.go('customer.home');
+                }
+                if (user.role === 'restaurant') {
                     $state.go('restaurant.home');
                 }
             });
@@ -743,34 +733,6 @@
 'use strict';
 
 (function () {
-    angular.module('waitrApp').controller('custRestaurantMenuCtrl', ['restaurantService', '$stateParams', '$ionicHistory', '$state', custRestaurantMenuCtrl]);
-
-    function custRestaurantMenuCtrl(restaurantService, $stateParams, $ionicHistory, $state) {
-        var cmc = this;
-        cmc.restaurantId = $stateParams.restaurantId;
-        cmc.menuTitle = null;
-
-        restaurantService.getCurrentRestaurant(cmc.restaurantId).then(function (restaurant) {
-            cmc.restaurant = restaurant[0];
-            cmc.groupedMenu = _.groupBy(cmc.restaurant.menu, 'section');
-        });
-
-        cmc.goBack = function () {
-            $ionicHistory.goBack();
-        };
-
-        cmc.toggleSection = function (key) {
-            if (key === cmc.menuTitle) {
-                cmc.menuTitle = null;
-            } else {
-                cmc.menuTitle = key;
-            }
-        };
-    }
-})();
-'use strict';
-
-(function () {
     angular.module('waitrApp').controller('CustomerRestaurantController', ['restaurantService', 'userService', 'waitlistService', '$stateParams', '$ionicHistory', '$state', '$scope', CustomerRestaurantController]);
 
     function CustomerRestaurantController(restaurantService, userService, waitlistService, $stateParams, $ionicHistory, $state, $scope) {
@@ -872,6 +834,34 @@
                     $state.go("customer.waitlist");
                 });
             });
+        };
+    }
+})();
+'use strict';
+
+(function () {
+    angular.module('waitrApp').controller('custRestaurantMenuCtrl', ['restaurantService', '$stateParams', '$ionicHistory', '$state', custRestaurantMenuCtrl]);
+
+    function custRestaurantMenuCtrl(restaurantService, $stateParams, $ionicHistory, $state) {
+        var cmc = this;
+        cmc.restaurantId = $stateParams.restaurantId;
+        cmc.menuTitle = null;
+
+        restaurantService.getCurrentRestaurant(cmc.restaurantId).then(function (restaurant) {
+            cmc.restaurant = restaurant[0];
+            cmc.groupedMenu = _.groupBy(cmc.restaurant.menu, 'section');
+        });
+
+        cmc.goBack = function () {
+            $ionicHistory.goBack();
+        };
+
+        cmc.toggleSection = function (key) {
+            if (key === cmc.menuTitle) {
+                cmc.menuTitle = null;
+            } else {
+                cmc.menuTitle = key;
+            }
         };
     }
 })();
@@ -1181,31 +1171,35 @@
 'use strict';
 
 (function () {
-  angular.module('waitrApp').controller('restaProfileCtrl', ['waitlistService', '$scope', 'userService', restaProfileCtrl]);
+    angular.module('waitrApp').controller('RestaurantProfileController', ['waitlistService', '$scope', RestaurantProfileController]);
 
-  function restaProfileCtrl(waitlistService, $scope, userService) {
+    function RestaurantProfileController(waitlistService, $scope) {
 
-    var rpc = this;
-    rpc.infoHoursToggle = true;
-    rpc.currentUser = $scope.rrc.currentUser;
-    rpc.restaurant = $scope.rrc.restaurant;
+        var vm = this;
 
-    waitlistService.getWaitlist(rpc.currentUser.restaurant_id).then(function (res) {
-      rpc.customerEntries = res[0];
-    });
+        vm.infoHoursToggle = true;
+        vm.currentUser = $scope.rrc.currentUser;
+        vm.restaurant = $scope.rrc.restaurant;
 
-    rpc.callTel = function () {
-      window.location.href = 'tel:' + rpc.restaurant.restaurantPhone;
-    };
-    rpc.getWebsite = function () {
-      window.open(rpc.restaurant.restaurantWebsite, '_system', 'location=yes');return false;
-    };
+        waitlistService.getWaitlist(vm.currentUser.restaurant_id).then(function (res) {
+            return vm.customerEntries = res[0];
+        });
 
-    rpc.infoHoursToggle = true;
-    rpc.showOnClick = function (value) {
-      rpc.infoHoursToggle = value;
-    };
-  };
+        vm.callTel = function () {
+            return window.location.href = 'tel:' + vm.restaurant.restaurantPhone;
+        };
+
+        vm.getWebsite = function () {
+            window.open(vm.restaurant.restaurantWebsite, '_system', 'location=yes');
+            return false;
+        };
+
+        vm.infoHoursToggle = true;
+
+        vm.showOnClick = function (value) {
+            return vm.infoHoursToggle = value;
+        };
+    }
 })();
 'use strict';
 

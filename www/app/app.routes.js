@@ -113,6 +113,8 @@
                         }
                         return restaurantService.getCurrentRestaurant(user.restaurant_id)
                             .then((restaurant) => {
+                                console.log('user', user);
+                                console.log('restaurant', restaurant);
                                 return {
                                     currentUser: user,
                                     restaurant: restaurant
@@ -123,7 +125,7 @@
             })
             .state('restaurant.home', {
                 url: '/home',
-                templateUrl: './app/restaurant/home/home.html',
+                templateUrl: './app/restaurant/home/restaurant-home.html',
                 controller: 'RestaurantHomeController',
                 controllerAs: 'rhc'
             })
@@ -144,16 +146,9 @@
 
             .state('restaurant.profile', {
                 url: '/profile',
-                templateUrl: './app/restaurant/restaProfile/restaProfile.html',
-                controller: 'restaProfileCtrl',
+                templateUrl: './app/restaurant/profile/restaurant-profile.html',
+                controller: 'RestaurantProfileController',
                 controllerAs: 'rpc'
-            })
-            //not child of profile, but called by profile
-            .state('restaurant.menu', {
-                url: '/profile/menu',
-                templateUrl: './app/restaurant/restaMenu/restaMenu.html',
-                controller: 'restaMenuCtrl',
-                controllerAs: 'rmc'
             })
             .state('restaurant.settings', {
                 url: '/settings',
@@ -173,12 +168,6 @@
                 templateUrl: './app/restaurant/settings/restaurant-edit-contact.html',
                 controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
-            })
-            .state('restaurant.editMenu', {
-                url: '/settings/edit-menu',
-                templateUrl: './app/restaurant/settings/restaurant-edit-menu.html',
-                controller: 'RestaurantEditMenuController',
-                controllerAs: 'remc',
             })
             .state('restaurant.editHours', {
                 url: '/settings/edit-hours',
