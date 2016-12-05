@@ -1,33 +1,21 @@
 (function () {
-'use strict';
+    'use strict';
+    angular
+        .module('waitrApp')
+        .service('authTokenService', ['$window', authTokenService]);
 
-angular.module('waitrApp')
-  .factory('authTokenService', authTokenService);
+    function authTokenService($window) {
 
-  authTokenService.$inject = ['$window'];
+        this.setToken = () => {
+            if (token) {
+                $window.localStorage.setItem('token', token);
+                return token;
+            } else {
+                $window.localStorage.removeItem('token');
+            }
+        };
 
-  function authTokenService($window) {
-    return {
+        this.getToken = () => $window.localStorage.getItem('token');
 
-      setToken: setToken,
-      getToken: getToken
-
-    };
-
-    //////////////////
-
-    function setToken(token) {
-      if (token) {
-        $window.localStorage.setItem('token', token);
-        return token;
-      } else {
-        $window.localStorage.removeItem('token');
-      }
     }
-
-    function getToken() {
-      return $window.localStorage.getItem('token');
-    }
-
-  }
 })();
