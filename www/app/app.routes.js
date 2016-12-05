@@ -112,7 +112,7 @@
                             return $state.go('login');
                         }
                         return restaurantService.getCurrentRestaurant(user.restaurant_id)
-                            .then((restaurant) => {
+                            .then(function (restaurant) {
                                 console.log('user', user);
                                 console.log('restaurant', restaurant);
                                 return {

@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('waitrApp')
-        .controller('RestaurantSettingsController', ['restaurantService', '$scope', '$filter', RestaurantSettingsController])
-        .directive('formattedTime', function ($filter) {
+        .controller('RestaurantSettingsController', ['restaurantService', '$scope', 'restaurantInfo', RestaurantSettingsController])
+        .directive('formattedTime', function () {
 
             return {
                 require: '?ngModel',
@@ -20,14 +20,12 @@
 
         });
 
-    function RestaurantSettingsController(restaurantService, $scope, $filter) {
+    function RestaurantSettingsController(restaurantService, restaurantInfo) {
 
         const vm = this;
 
-        vm.currentUserID = $scope.rrc.currentUser.restaurant_id;
-        vm.restaurant = $scope.rrc.restaurant;
-
-        console.log('restaurant', vm.restaurant);
+        vm.currentUserID = restaurantInfo.currentUser.id;
+        vm.restaurant = restaurantInfo.restaurant[0];
 
         vm.restaurant.hours.monday.openTime = new Date(vm.restaurant.hours.monday.openTime);
         vm.restaurant.hours.monday.closeTime = new Date(vm.restaurant.hours.monday.closeTime);
