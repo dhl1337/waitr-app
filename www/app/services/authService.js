@@ -1,4 +1,5 @@
 (function () {
+    'use strict';
     angular
         .module('waitrApp')
         .service('authService', ['$http', 'SERVER_URL', 'authTokenService', '$rootScope', authService]);
