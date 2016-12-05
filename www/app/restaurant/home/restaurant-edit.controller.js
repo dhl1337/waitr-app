@@ -5,7 +5,7 @@
         .controller('RestaurantEditController', ['waitlistService', '$state', "$ionicHistory", "$stateParams", "$ionicPopup", 'restaurantService', '$scope', RestaurantEditController]);
 
     function RestaurantEditController(waitlistService, $state, $ionicHistory, $stateParams, $ionicPopup, restaurantService, $scope) {
-        
+
         const socket = io.connect('http://localhost:3000');
         const vm = this;
 
