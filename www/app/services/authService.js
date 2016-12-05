@@ -1,89 +1,54 @@
 (function () {
     'use strict';
+    angular
+        .module('waitrApp')
+        .service('authService', ['$http', 'SERVER_URL', 'authTokenService', '$rootScope', authService]);
 
-    angular.module('waitrApp')
-        .factory('authService', authService);
-
-    authService.$inject = ['$http', 'SERVER_URL', '$q', 'authTokenService', '$state', '$rootScope'];
-
-    function authService($http, SERVER_URL, $q, authTokenService, $state, $rootScope) {
-
-        return {
-
-            register: register,
-            login: login,
-            logout: logout,
-            isAuthenticated: isAuthenticated,
-            isAuthorized: isAuthorized,
-            getUser: getUser,
-
+    function authService($http, SERVER_URL, authTokenService, $rootScope) {
+        this.register = (data) => {
+            $http.post(`${SERVER_URL}/register`, data).then(response => {
+                authTokenService.setToken(response.data.token);
+                const currentUser = parseToken(response.data.token);
+                $rootScope.$broadcast('currentUser', currentUser);
+            })
         };
 
-        //////////////////
+        this.login = (credentials) => {
+            $http.post(`${SERVER_URL}/login`, credentials).then(response => {
+                authTokenService.setToken(response.data.token);
+                const currentUser = parseToken(response.data.token);
+                $rootScope.$broadcast('currentUser', currentUser);
+            })
+        };
 
-        function register(data) {
-            var deferred = $q.defer();
-            $http
-                .post(SERVER_URL + '/register', data)
-                .then(function (res) {
-                    authTokenService.setToken(res.data.token);
-                    var currentUser = parseToken(res.data.token);
-                    $rootScope.$broadcast('currentUser', currentUser);
-                    return deferred.resolve(currentUser);
-                }, function (res) {
-                    return deferred.reject(res);
-                });
-            return deferred.promise;
-        }
+        this.logout = () => authTokenService.setToken();
 
-        function login(credentials) {
-            var deferred = $q.defer();
-            $http
-                .post(SERVER_URL + '/login', credentials)
-                .then(function (res) {
-                    authTokenService.setToken(res.data.token);
-                    var currentUser = parseToken(res.data.token);
-                    $rootScope.$broadcast('currentUser', currentUser);
-                    return deferred.resolve(currentUser);
-                }, function (res) {
-                    return deferred.reject(res);
-                });
-            return deferred.promise;
-        }
+        this.isAuthenticated = () => !!this.getUser();
 
-        function logout() {
-            authTokenService.setToken();
-            // $state.go('login');
-        }
-
-        function isAuthenticated() {
-            return !!getUser();
-        }
-
-        function isAuthorized(authorizedRoles) {
+        this.isAuthorized = (authorizedRoles) => {
             if (!angular.isArray(authorizedRoles)) {
                 authorizedRoles = [authorizedRoles];
             }
-            return (isAuthenticated() && authorizedRoles.indexOf(getUser().role) !== -1);
-        }
 
-        function parseToken(token) {
+            return (isAuthenticated() && authorizedRoles.indexOf(getUser().role) !== -1);
+        };
+
+        const parseToken = (token) => {
             if (token) {
                 return JSON.parse(atob(token.split('.')[1]));
             } else {
                 return null;
             }
-        }
+        };
 
-        function getUser() {
-            var currentUser = authTokenService.getToken();
+        this.getUser = () => {
+            const currentUser = authTokenService.getToken();
             if (currentUser) {
                 return JSON.parse(atob(currentUser.split('.')[1]));
             } else {
                 return null;
             }
         }
-
 
     }
 })();
