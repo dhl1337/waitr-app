@@ -6,7 +6,7 @@
 
     function authTokenService($window) {
 
-        this.setToken = () => {
+        this.setToken = (token) => {
             if (token) {
                 $window.localStorage.setItem('token', token);
                 return token;

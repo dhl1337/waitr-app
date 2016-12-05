@@ -1,10 +1,18 @@
 (function () {
-    'use strict';
     angular
         .module('waitrApp')
         .service('authService', ['$http', 'SERVER_URL', 'authTokenService', '$rootScope', authService]);
 
     function authService($http, SERVER_URL, authTokenService, $rootScope) {
+
+        const parseToken = (token) => {
+            if (token) {
+                return JSON.parse(atob(token.split('.')[1]));
+            } else {
+                return null;
+            }
+        };
+
         this.register = (data) => {
             $http.post(`${SERVER_URL}/register`, data).then(response => {
                 authTokenService.setToken(response.data.token);
@@ -13,11 +21,12 @@
             })
         };
 
-        this.login = (credentials) => {
-            $http.post(`${SERVER_URL}/login`, credentials).then(response => {
+        this.login = credentials => {
+            return $http.post(`${SERVER_URL}/login`, credentials).then(response => {
                 authTokenService.setToken(response.data.token);
-                const currentUser = parseToken(response.data.token);
+                let currentUser = parseToken(response.data.token);
                 $rootScope.$broadcast('currentUser', currentUser);
+                return currentUser;
             })
         };
 
@@ -31,14 +40,6 @@
             }
 
             return (isAuthenticated() && authorizedRoles.indexOf(getUser().role) !== -1);
-        };
-
-        const parseToken = (token) => {
-            if (token) {
-                return JSON.parse(atob(token.split('.')[1]));
-            } else {
-                return null;
-            }
         };
 
         this.getUser = () => {
