@@ -5,9 +5,9 @@
         .service('waitlistService', waitlistService);
 
     function waitlistService($http, SERVER_URL) {
-        var url = SERVER_URL + "/api/waitlist/";
+        const url = `${SERVER_URL}/api/waitlist/`;
 
-        this.isValidPhone = function (num) {
+        this.isValidPhone = (num) => {
             if (num.length != 10) {
                 return false;
             }
@@ -16,13 +16,13 @@
                 return true;
             }
             return false;
-        }
+        };
 
         this.maxPartySize = 100;
 
-        this.addAnonToWaitlist = function (user, waitlistId, waitTime) {
+        this.addAnonToWaitlist = (user, waitlistId, waitTime) => {
             //first, we need to structure our data in a way that the server will accept
-            var newListEntry = {
+            const newListEntry = {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 partySize: user.partySize,
@@ -37,40 +37,19 @@
             }
 
             //now submit this as the data to the waitlist id on the restaurantInfo object
-            return $http({
-                method: "PUT",
-                url: url + waitlistId + "/list",
-                data: newListEntry
-            }).then(function (res) {
-                return res.data;
-            })
+            return $http.put(`${url}${waitlistId}/list`, newListEntry).then(respond => respond.data)
         };
 
-        this.getOneFromWaitlist = function (userId, waitlistId) {
-            return $http({
-                method: "GET",
-                url: url + waitlistId + "/list/" + userId
-            }).then(function (res) {
-                return res.data;
-            })
-        };
+        this.getOneFromWaitlist = (userId, waitlistId) => $http.get(`${url}${waitlistId}/list/${userId}`).then(respond => respond.data);
 
-        this.removeFromWaitlist = function (userId, waitlistId) {
-            return $http({
-                method: "DELETE",
-                url: url + waitlistId + "/list/" + userId
-            }).then(function (res) {
-                //console.log("hitting return");
-                return res.data;
-            })
-        };
+        this.removeFromWaitlist = (userId, waitlistId) => $http.delete(`${url}${waitlistId}/list/${userId}`).then(respond => respond.data);
 
         this.updateWaitlistEntry = (userId, waitlistId, body) => {
             delete body._id;
             return $http.put(`${url}${waitlistId}/list/${userId}`, body).then(response => response.data)
         };
 
-        this.updateWaitTime = (waitlistId, time) => $http.put(url + waitlistId, {quotedTime: time}).then(response => response.data.quotedTime);
+        this.updateWaitTime = (waitlistId, time) => $http.put(`${url}waitlistId`, {quotedTime: time}).then(response => response.data.quotedTime);
 
         this.getWaitlist = (waitListId) => $http.get(`${url}?restaurant_id=${waitListId}`).then(response => response.data);
     }
