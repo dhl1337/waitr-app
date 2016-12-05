@@ -7,3 +7,5 @@ plugins/
 .idea/
 config.js
 build
+www/js
+

@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('waitrApp')
-        .controller('RestaurantSettingsController', ['restaurantService', '$scope', 'restaurantInfo', RestaurantSettingsController])
+        .controller('RestaurantSettingsController', ['restaurantService', 'restaurantInfo', RestaurantSettingsController])
         .directive('formattedTime', function () {
 
             return {
@@ -23,6 +23,8 @@
     function RestaurantSettingsController(restaurantService, restaurantInfo) {
 
         const vm = this;
+
+        console.log('restaurant info', restaurantInfo);
 
         vm.currentUserID = restaurantInfo.currentUser.id;
         vm.restaurant = restaurantInfo.restaurant[0];

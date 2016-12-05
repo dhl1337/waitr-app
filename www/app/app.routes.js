@@ -130,6 +130,7 @@
                 controllerAs: 'rhc'
             })
 
+
             //called in restaHome, but still restaurant child
             .state('restaurant.addPerson', {
                 url: '/home/add-person',
@@ -150,6 +151,10 @@
                 controller: 'RestaurantProfileController',
                 controllerAs: 'rpc'
             })
+            .state('restaurant.menu', {
+                url: '/profile/menu',
+                templateUrl: './app/restaurant/menu/restaurant-menu.html'
+            })
             .state('restaurant.settings', {
                 url: '/settings',
                 templateUrl: './app/restaurant/settings/restaurant-settings.html',
@@ -166,6 +171,12 @@
             .state('restaurant.editContact', {
                 url: '/settings/edit-contact',
                 templateUrl: './app/restaurant/settings/restaurant-edit-contact.html',
+                controller: 'RestaurantSettingsController',
+                controllerAs: 'rsc'
+            })
+            .state('restaurant.editMenu', {
+                url: '/settings/edit-menu',
+                templateUrl: './app/restaurant/settings/restaurant-edit-menu.html',
                 controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
