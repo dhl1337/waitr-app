@@ -23,7 +23,11 @@
                 email: email
             };
 
+            console.log('user', user);
+            console.log('id', vm.currentUser._id);
+
             userService.updateUser(vm.currentUser._id, user).then(updateUser => {
+                console.log('update user', updateUser);
                 $scope.ccc.currentUser = updateUser;
                 $state.go('customer.settings');
             });

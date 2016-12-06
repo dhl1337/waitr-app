@@ -44,7 +44,7 @@
       <div class="list list-inset loginReg">
         <label class="item item-input">
           <i class="icon ion-ios-telephone placeholder-icon"></i>
-          <input type="tel" placeholder="Phone" ng-model="regCtrl.rest.phone">
+          <input type="tel" placeholder="Phone" ng-model="regCtrl.rest.phone" maxlength="10">
           <i class="ion-close" on-touch="regCtrl.rest.phone = ''" ng-show="regCtrl.rest.phone !== ''"></i>
         </label>
       </div>

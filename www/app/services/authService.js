@@ -15,10 +15,11 @@
         };
 
         this.register = (data) => {
-            $http.post(`${SERVER_URL}/register`, data).then(response => {
+            return $http.post(`${SERVER_URL}/register`, data).then(response => {
                 authTokenService.setToken(response.data.token);
                 const currentUser = parseToken(response.data.token);
                 $rootScope.$broadcast('currentUser', currentUser);
+                return currentUser;
             })
         };
 

@@ -3,9 +3,9 @@
 
     angular
         .module('waitrApp')
-        .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', 'USER_ROLES', configure]);
+        .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', configure]);
 
-    function configure($stateProvider, $urlRouterProvider, $ionicConfigProvider, USER_ROLES) {
+    function configure($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         $ionicConfigProvider.backButton.text('').icon('ion-ios7-arrow-left');
 

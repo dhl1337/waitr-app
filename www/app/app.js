@@ -64,20 +64,16 @@
 
         })
 
-        .config(function ($httpProvider) {
-            $httpProvider.interceptors.push('authInterceptorService');
-        })
+        .config($httpProvider => $httpProvider.interceptors.push('authInterceptorService'))
 
-        .controller('AppCtrl', ['$rootScope', 'AUTH_EVENTS', 'authService', '$scope', '$state', '$ionicPopup', AppCtrl]);
+        .controller('AppCtrl', ['AUTH_EVENTS', 'authService', '$scope', '$state', '$ionicPopup', AppCtrl]);
 
-    function AppCtrl($rootScope, AUTH_EVENTS, authService, $scope, $state, $ionicPopup) {
-        var ac = this;
+    function AppCtrl(AUTH_EVENTS, authService, $scope, $state, $ionicPopup) {
+        var vm = this;
 
-        $scope.$on('currentUser', function (event, user) {
-            setCurrentUser(user);
-        });
+        $scope.$on('currentUser', (event, user) => setCurrentUser(user));
 
-        $scope.$on(AUTH_EVENTS.notAuthorized, function (event) {
+        $scope.$on(AUTH_EVENTS.notAuthorized, (event) => {
             var alertPopup = $ionicPopup.alert({
                 title: 'Unauthorized!',
                 template: 'Invalid access.',
@@ -88,7 +84,7 @@
             });
         });
 
-        $scope.$on(AUTH_EVENTS.notAuthenticated, function (event, response) {
+        $scope.$on(AUTH_EVENTS.notAuthenticated, (event, response) => {
             authService.logout();
             $state.go('login');
             var alertPopup = $ionicPopup.alert({
@@ -101,20 +97,15 @@
             });
         });
 
-        ac.currentUser = null;
-        ac.logout = logout;
+        vm.currentUser = null;
 
-        ////////////////
-
-        function logout() {
-            ac.currentUser = null;
+        vm.logout = () => {
+            vm.currentUser = null;
             authService.logout();
             $state.go('login');
-        }
+        };
 
-        function setCurrentUser(user) {
-            ac.currentUser = user;
-        }
+        let setCurrentUser = (user) => vm.currentUser = user;
 
     }
 

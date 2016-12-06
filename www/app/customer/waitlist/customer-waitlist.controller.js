@@ -12,6 +12,7 @@
         vm.currentUser = $scope.ccc.currentUser;
 
         socket.on('newPersonAdded', (data) => {
+            console.log('new person added', data);
             vm.currentUser.inWaitList.list.push(data);
             $scope.$apply();
         });

@@ -3,11 +3,11 @@ var Mongoose = require('mongoose'),
 
 var UserSchema = new Mongoose.Schema({
 
-  firstName: {type: String/*, required: true*/},
-  lastName: {type: String/*, required: true*/},
-  email: {type: String/*, required: true*/, unique: true},
-  password: {type: String/*, required: true*/},
-  phone: {type: Number/*, required: true*/},
+  firstName: {type: String},
+  lastName: {type: String},
+  email: {type: String, unique: true},
+  password: {type: String},
+  phone: {type: Number},
   restaurant_id: {type: Mongoose.Schema.Types.ObjectId, ref: 'Restaurant'},
   role: {
     type: String,

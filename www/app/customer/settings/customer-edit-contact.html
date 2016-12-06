@@ -2,6 +2,7 @@
   <ion-nav-title>
     <span style="font-size:1.5rem">Contact Info</span>
   </ion-nav-title>
+
   <ion-content>
     <div class="list">
       <label class="item item-input item-floating-label">
@@ -25,6 +26,8 @@
         <input type="text" placeholder="Food Allergies" ng-model="foodAllergies">
       </label>
     </div>
-    <button class="button button-full button-positive" ng-click="csc.updateUser(csc.firstName, csc.lastName, csc.phone, csc.email)">SAVE</button>
   </ion-content>
 </ion-view>
+<div class="bar bar-footer">
+  <button id="buttonOnRestProfile" class="button button-block button-icon button-positive" ng-click="csc.updateUser(csc.firstName, csc.lastName, csc.phone, csc.email)">UPDATE</button>
+</div>

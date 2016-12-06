@@ -8,7 +8,7 @@
 
         this.currentUser = (id) => $http.get(`${SERVER_URL}/api/user/${id}`).then(response => response.data);
 
-        this.updateUser = (id, obj) => $http.put(`${SERVER_URL}/api/user/${id}`).then(response => response.data);
+        this.updateUser = (id, obj) => $http.put(`${SERVER_URL}/api/user/${id}`, obj).then(response => response.data);
 
     }
 
