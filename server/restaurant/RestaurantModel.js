@@ -50,7 +50,10 @@ var RestaurantSchema = new Mongoose.Schema({
         section: {type: String}
     }],
     waitlist_id: {type: Mongoose.Schema.Types.ObjectId, ref: 'Waitlist'},
-    restaurantImage: {type: String, default: '../img/logo.svg'},
+    restaurantImage: {
+        type: String,
+        default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvZGMAYzv-fa02MiXyKWJ4ITUvAOyrEhAEMKkXB_30gaTdPNrZ9A'
+    },
     restaurantIcon: {type: String, default: '../img/logo.svg'},
     restaurantWebsite: {type: String, default: 'www.apple.com'},
     restaurantPhone: {type: String, default: '1231231234'}

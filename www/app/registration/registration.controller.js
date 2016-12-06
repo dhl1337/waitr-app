@@ -26,7 +26,8 @@
 
         vm.register = (data) => {
 
-            authService.register(data).then(res => {
+            authService.register(data).then(user => {
+                console.log('user', user);
                 vm.cust.firstName = '';
                 vm.cust.lastName = '';
                 vm.cust.email = '';
@@ -40,11 +41,11 @@
                 vm.rest.phone = '';
                 vm.rest.restaurantName = '';
 
-                if (res.role === 'user') {
+                if (user.role === 'user') {
                     $state.go('customer.home');
                 }
 
-                if (res.role === 'restaurant') {
+                if (user.role === 'restaurant') {
                     $state.go('restaurant.home');
                 }
 
