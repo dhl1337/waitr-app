@@ -27,7 +27,6 @@
         vm.register = (data) => {
 
             authService.register(data).then(user => {
-                console.log('user', user);
                 vm.cust.firstName = '';
                 vm.cust.lastName = '';
                 vm.cust.email = '';

@@ -35,10 +35,7 @@
 
         vm.callTel = () => window.location.href = 'tel:' + vm.restaurant.restaurantPhone;
 
-        vm.getWebsite = () => {
-            window.open(vm.restaurant.restaurantWebsite, '_system', 'location=yes');
-            return false;
-        };
+        vm.getWebsite = () => window.open(vm.restaurant.restaurantWebsite);
 
         vm.goBack = () => $ionicHistory.goBack();
 

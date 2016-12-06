@@ -2,6 +2,11 @@
     <ion-nav-title>
         <span style="font-size:1.5rem">Menu</span>
     </ion-nav-title>
+
+    <ion-nav-buttons side="right">
+        <a menu-toggle="right" ng-click="rhc.showWaitTimeModal(rhc.customerEntries.quotedTime)"><i class="button icon ion-plus-round"></i></a>
+    </ion-nav-buttons>
+
     <ion-content>
         <ion-list can-swipe="listCanSwipe">
             <ion-item ng-repeat="menu in rsc.restaurant.menu[0]">

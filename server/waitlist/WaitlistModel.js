@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const WaitlistSchema = mongoose.Schema({
     restaurant_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant'},
-    quotedTime: {type: Number},
+    quotedTime: {type: Number, default: 1},
     list: [{
         user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         firstName: {type: String/*, required: true*/},

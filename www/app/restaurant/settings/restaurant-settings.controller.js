@@ -46,5 +46,36 @@
 
         vm.updateRestaurant = restaurant => restaurantService.updateRestaurant(vm.restaurant._id, restaurant);
 
+        vm.showWaitTimeModal = (time) => {
+            vm.time = time;
+            var myPopup = $ionicPopup.confirm({
+                template: '<label class="item item-input"><input type="tel" ng-model="vm.time" min="0"></label>',
+                title: "Enter Wait Time",
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancel'
+                },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            vm.time = parseInt(vm.time);
+                            if (vm.time < 0 || isNaN(vm.time)) {
+                                e.preventDefault();
+                            } else {
+                                return vm.time;
+                            }
+                        }
+                    }]
+            })
+                .then(res => {
+                    if (res >= 0) {
+                        waitlistService.updateWaitTime(vm.customerEntries._id, res).then(function (res) {
+                            vm.customerEntries.quotedTime = res;
+                        })
+                    }
+                })
+        };
+
     }
 })();
