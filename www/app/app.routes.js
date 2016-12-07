@@ -180,6 +180,12 @@
                 controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
+            .state('restaurant.addMenu', {
+                url: '/settings/add-menu',
+                templateUrl: './app/restaurant/settings/restaurant-add-menu.html',
+                controller: 'RestaurantSettingsController',
+                controllerAs: 'rsc'
+            })
             .state('restaurant.editHours', {
                 url: '/settings/edit-hours',
                 templateUrl: './app/restaurant/settings/restaurant-edit-hours.html',

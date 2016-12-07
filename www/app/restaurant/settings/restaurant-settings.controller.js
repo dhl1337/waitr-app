@@ -46,6 +46,15 @@
 
         vm.updateRestaurant = restaurant => restaurantService.updateRestaurant(vm.restaurant._id, restaurant);
 
+        vm.addMenu = () => {
+            const menu = {
+                title: vm.menuTitle,
+                description: vm.menuDescription,
+                price: vm.menuPrice
+            };
+            console.log(menu)
+        };
+
         vm.showWaitTimeModal = (time) => {
             vm.time = time;
             var myPopup = $ionicPopup.confirm({
