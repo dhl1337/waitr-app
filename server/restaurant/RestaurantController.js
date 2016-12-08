@@ -17,7 +17,8 @@ module.exports = {
     },
     addItemToMenu(req, res) {
         Restaurant
-            .findByIdAndUpdate(req.params.id, {$push: {menu: req.body}}, {new: true}, (err, result) => err ? res.status(500).send(err) : res.send(result));
+            .findByIdAndUpdate(req.params.id, {$push: {menu: req.body}})
+            .exec((err, result) => err ? res.status(500).send(err) : res.send(result));
     },
     deleteItemToMenu(req, res) {
         Restaurant

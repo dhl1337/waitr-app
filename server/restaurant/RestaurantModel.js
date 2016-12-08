@@ -45,7 +45,7 @@ var RestaurantSchema = new Mongoose.Schema({
     },
     menu: [{
         title: {type: String},
-        desc: {type: String},
+        description: {type: String},
         price: {type: Number}
     }],
     waitlist_id: {type: Mongoose.Schema.Types.ObjectId, ref: 'Waitlist'},

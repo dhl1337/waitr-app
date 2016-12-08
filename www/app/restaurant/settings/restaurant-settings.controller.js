@@ -46,13 +46,26 @@
 
         vm.updateRestaurant = restaurant => restaurantService.updateRestaurant(vm.restaurant._id, restaurant);
 
+        var getRestaurant = function () {
+            restaurantService.getCurrentRestaurant(vm.restaurant._id).then(function (restaurant) {
+                console.log('restaurant', restaurant);
+                vm.currentRestaurant = restaurant[0];
+            })
+        };
+
+        getRestaurant();
+
         vm.addMenu = () => {
             const menu = {
                 title: vm.menuTitle,
                 description: vm.menuDescription,
                 price: vm.menuPrice
             };
-            console.log(menu)
+            console.log('menu', menu);
+            restaurantService.updateRestaurantMenu(vm.restaurant._id, menu).then(function (updateMenu) {
+                console.log('update menu', updateMenu)
+                getRestaurant();
+            })
         };
 
         vm.showWaitTimeModal = (time) => {
