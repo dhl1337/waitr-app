@@ -8,11 +8,23 @@
     </ion-nav-buttons>
 
     <ion-content>
-        <ion-list can-swipe="listCanSwipe">
+        <ion-list can-swipe="true">
             <ion-item ng-repeat="menu in rsc.currentRestaurant.menu">
-                <h3>{{menu.title}}</h3>
-                <p>{{menu.description}}</p>
-                <ion-item-right align-title="right">{{menu.price}}</ion-item-right>
+                <div class="row">
+                    <div class="col col-75">
+                        <h2 item-content id="menuTitle">{{menu.title}}</h2>
+                        <p id="menuDescription">{{menu.description}}</p>
+                    </div>
+                    <div class="col">
+                        <h2 id="menuPrice">${{menu.price}}</h2>
+                    </div>
+                </div>
+                <ion-option-button class="button-info" ng-click="edit(item)">
+                    Edit
+                </ion-option-button>
+                <ion-option-button class="button-assertive" ng-click="edit(item)">
+                    Delete
+                </ion-option-button>
             </ion-item>
         </ion-list>
     </ion-content>

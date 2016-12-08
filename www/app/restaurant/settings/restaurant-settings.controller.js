@@ -24,8 +24,6 @@
 
         const vm = this;
 
-        console.log('restaurant info', restaurantInfo);
-
         vm.currentUserID = restaurantInfo.currentUser.id;
         vm.restaurant = restaurantInfo.restaurant[0];
 
