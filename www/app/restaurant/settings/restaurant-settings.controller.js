@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('waitrApp')
-        .controller('RestaurantSettingsController', ['restaurantService', 'restaurantInfo', '$state', RestaurantSettingsController])
+        .controller('RestaurantSettingsController', ['restaurantService', 'restaurantInfo', RestaurantSettingsController])
         .directive('formattedTime', function () {
 
             return {
@@ -20,7 +20,7 @@
 
         });
 
-    function RestaurantSettingsController(restaurantService, restaurantInfo, $state) {
+    function RestaurantSettingsController(restaurantService, restaurantInfo) {
 
         const vm = this;
 

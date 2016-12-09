@@ -16,7 +16,7 @@
                         <p id="menuDescription">{{menu.description}}</p>
                     </div>
                     <div class="col">
-                        <h2 id="menuPrice">${{menu.price}}</h2>
+                        <h2 id="menuPrice">{{menu.price | currency}}</h2>
                     </div>
                 </div>
                 <ion-option-button class="button-info" ui-sref="restaurant.editMenu({id:menu._id})">

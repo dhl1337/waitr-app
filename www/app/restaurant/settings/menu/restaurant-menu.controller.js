@@ -8,8 +8,6 @@
         const menuId = $stateParams.id;
         const vm = this;
 
-        console.log('menu id', menuId);
-
         vm.restaurant = restaurantInfo.restaurant[0];
 
         vm.addMenu = () => {
@@ -18,7 +16,6 @@
                 description: vm.menuDescription,
                 price: vm.menuPrice
             };
-            console.log('menu', menu);
             restaurantService.updateRestaurantMenu(vm.restaurant._id, menu).then(function (updateMenu) {
                 vm.menuTite = '';
                 vm.menuDescription = '';
