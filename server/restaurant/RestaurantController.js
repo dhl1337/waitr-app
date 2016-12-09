@@ -22,7 +22,8 @@ module.exports = {
     },
     deleteItemToMenu(req, res) {
         Restaurant
-            .findByIdAndUpdate(req.params.id, {$pull: {'menu': {'_id': req.body._id}}}, {new: true}, (err, result) => err ? res.status(500).send(err) : res.send(result));
+            .findByIdAndUpdate(req.params.id, {$pull: {'menu': {'_id': req.body._id}}})
+            .exec((err, result) => err ? res.status(500).send(err) : res.send(result));
     },
 
     delete(req, res) {

@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('waitrApp')
-        .controller('RestaurantSettingsController', ['restaurantService', 'restaurantInfo', RestaurantSettingsController])
+        .controller('RestaurantSettingsController', ['restaurantService', 'restaurantInfo', '$state', RestaurantSettingsController])
         .directive('formattedTime', function () {
 
             return {
@@ -20,7 +20,7 @@
 
         });
 
-    function RestaurantSettingsController(restaurantService, restaurantInfo) {
+    function RestaurantSettingsController(restaurantService, restaurantInfo, $state) {
 
         const vm = this;
 
@@ -61,7 +61,14 @@
             };
             console.log('menu', menu);
             restaurantService.updateRestaurantMenu(vm.restaurant._id, menu).then(function (updateMenu) {
-                console.log('update menu', updateMenu)
+                $state.go('restaurant.editMenuHome');
+                getRestaurant();
+            })
+        };
+
+        vm.deleteMenuItem = (item) => {
+            restaurantService.deleteRestaurantMenuItem(vm.restaurant._id, {_id: item._id}).then(function (restaurant) {
+                console.log('restaurant', restaurant);
                 getRestaurant();
             })
         };

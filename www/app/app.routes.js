@@ -174,15 +174,21 @@
                 controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
+            .state('restaurant.editMenuHome', {
+                url: '/settings/menu',
+                templateUrl: './app/restaurant/settings/menu/restaurant-menu.html',
+                controller: 'RestaurantSettingsController',
+                controllerAs: 'rsc'
+            })
             .state('restaurant.editMenu', {
-                url: '/settings/edit-menu',
-                templateUrl: './app/restaurant/settings/restaurant-edit-menu.html',
+                url: '/settings/edit-menu/:id',
+                templateUrl: './app/restaurant/settings/menu/restaurant-edit-menu.html',
                 controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })
             .state('restaurant.addMenu', {
                 url: '/settings/add-menu',
-                templateUrl: './app/restaurant/settings/restaurant-add-menu.html',
+                templateUrl: './app/restaurant/settings/menu/restaurant-add-menu.html',
                 controller: 'RestaurantSettingsController',
                 controllerAs: 'rsc'
             })

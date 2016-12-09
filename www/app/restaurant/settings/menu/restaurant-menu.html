@@ -1,0 +1,31 @@
+<ion-view>
+    <ion-nav-title>
+        <span style="font-size:1.5rem">Menu</span>
+    </ion-nav-title>
+
+    <ion-nav-buttons side="right">
+        <a menu-toggle="right" ui-sref="restaurant.addMenu"><i class="button icon ion-plus-round"></i></a>
+    </ion-nav-buttons>
+
+    <ion-content>
+        <ion-list can-swipe="true">
+            <ion-item ng-repeat="menu in rsc.currentRestaurant.menu">
+                <div class="row">
+                    <div class="col col-75">
+                        <h2 item-content id="menuTitle">{{menu.title}}</h2>
+                        <p id="menuDescription">{{menu.description}}</p>
+                    </div>
+                    <div class="col">
+                        <h2 id="menuPrice">${{menu.price}}</h2>
+                    </div>
+                </div>
+                <ion-option-button class="button-info" ui-sref="restaurant.editMenu">
+                    Edit
+                </ion-option-button>
+                <ion-option-button class="button-assertive" ng-click="rsc.deleteMenuItem(menu)">
+                    Delete
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
