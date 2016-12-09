@@ -53,19 +53,6 @@
 
         getRestaurant();
 
-        vm.addMenu = () => {
-            const menu = {
-                title: vm.menuTitle,
-                description: vm.menuDescription,
-                price: vm.menuPrice
-            };
-            console.log('menu', menu);
-            restaurantService.updateRestaurantMenu(vm.restaurant._id, menu).then(function (updateMenu) {
-                $state.go('restaurant.editMenuHome');
-                getRestaurant();
-            })
-        };
-
         vm.deleteMenuItem = (item) => {
             restaurantService.deleteRestaurantMenuItem(vm.restaurant._id, {_id: item._id}).then(function (restaurant) {
                 console.log('restaurant', restaurant);

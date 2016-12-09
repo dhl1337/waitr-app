@@ -19,7 +19,7 @@
                         <h2 id="menuPrice">${{menu.price}}</h2>
                     </div>
                 </div>
-                <ion-option-button class="button-info" ui-sref="restaurant.editMenu">
+                <ion-option-button class="button-info" ui-sref="restaurant.editMenu({id:menu._id})">
                     Edit
                 </ion-option-button>
                 <ion-option-button class="button-assertive" ng-click="rsc.deleteMenuItem(menu)">
