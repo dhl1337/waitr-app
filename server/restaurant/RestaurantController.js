@@ -25,11 +25,27 @@ module.exports = {
             .findByIdAndUpdate(req.params.id, {$pull: {'menu': {'_id': req.body._id}}})
             .exec((err, result) => err ? res.status(500).send(err) : res.send(result));
     },
-
-    delete(req, res) {
+    getMenuItem(req, res) {
+        Restaurant
+            .find({'_id': req.params.id})
+            .select('menu')
+            .exec((err, result) => {
+                if (err) {
+                    res.status(500).send(err)
+                } else {
+                    const menu = result[0].menu.filter((menuItem) => {
+                        return menuItem._id == req.body.menuId;
+                    });
+                    res.send(menu)
+                }
+            });
+    },
+    delete(req, res)
+    {
         Restaurant
             .findByIdAndRemove(req.params.id, (err, result) => err ? res.status(500).send(err) : res.send(result));
-    },
+    }
+    ,
     currentRestId: function (req, res) {
         Restaurant
             .find({_id: req.params.id})
@@ -37,4 +53,5 @@ module.exports = {
             .exec((err, result) => err ? res.status(500).send(err) : res.send(result));
     }
 
-};
+}
+;
