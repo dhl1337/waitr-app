@@ -6,6 +6,7 @@ module.exports = app => {
 
     app.post('/api/restaurant', RestaurantController.create);
     app.post('/api/restaurant/:id/menu', RestaurantController.getMenuItem);
+    app.post('/api/restaurant/:id/menu/update', RestaurantController.updateItemMenu);
 
     app.put('/api/restaurant/:id', RestaurantController.update);
     app.put('/api/restaurant/menu/add/:id', RestaurantController.addItemToMenu);

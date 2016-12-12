@@ -40,18 +40,26 @@ module.exports = {
                 }
             });
     },
-    delete(req, res)
-    {
+    delete(req, res) {
         Restaurant
             .findByIdAndRemove(req.params.id, (err, result) => err ? res.status(500).send(err) : res.send(result));
-    }
-    ,
-    currentRestId: function (req, res) {
+    },
+    currentRestId(req, res) {
         Restaurant
             .find({_id: req.params.id})
             //.populate('waitlist_id')
             .exec((err, result) => err ? res.status(500).send(err) : res.send(result));
+    },
+    updateItemMenu(req, res) {
+        Restaurant
+            .findOneAndUpdate({'_id': req.params.id, 'menu._id': req.body.menuId}, {
+                $set: {
+                    'menu.$.title': req.body.menuTitle,
+                    'menu.$.description': req.body.menuDescription,
+                    'menu.$.price': req.body.menuPrice
+                }
+            })
+            .exec((err, result) => err ? res.status(500).send(err) : res.send(result));
     }
 
-}
-;
+};

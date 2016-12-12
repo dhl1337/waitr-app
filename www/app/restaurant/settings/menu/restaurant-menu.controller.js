@@ -16,7 +16,7 @@
                 description: vm.menuDescription,
                 price: vm.menuPrice
             };
-            restaurantService.updateRestaurantMenu(vm.restaurant._id, menu).then(function (updateMenu) {
+            restaurantService.addRestaurantMenu(vm.restaurant._id, menu).then(function (updateMenu) {
                 vm.menuTite = '';
                 vm.menuDescription = '';
                 vm.menuPrice = '';

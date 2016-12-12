@@ -14,7 +14,9 @@
 
         this.updateRestaurant = (id, obj) => $http.put(`${SERVER_URL}/api/restaurant/${id}`, obj).then(response => response.data);
 
-        this.updateRestaurantMenu = (id, menuObj) => $http.put(`${SERVER_URL}/api/restaurant/menu/add/${id}`, menuObj).then(response => response.data);
+        this.addRestaurantMenu = (id, menuObj) => $http.put(`${SERVER_URL}/api/restaurant/menu/add/${id}`, menuObj).then(response => response.data);
+
+        this.updateRestaurantMenu = (id, menu) => $http.post(`${SERVER_URL}/api/restaurant/${id}/menu/update`, menu).then(response => response.data);
 
         this.deleteRestaurantMenuItem = (id, item) => $http.put(`${SERVER_URL}/api/restaurant/menu/remove/${id}`, item).then(response => response.data);
 
