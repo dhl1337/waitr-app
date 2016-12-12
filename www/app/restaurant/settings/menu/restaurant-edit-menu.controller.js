@@ -11,8 +11,21 @@
         vm.restaurant = restaurantInfo.restaurant[0];
 
         restaurantService.getMenuItem(vm.restaurant._id, menuId).then((menu) => {
-            console.log(menu);
-        })
+            vm.editMenu = menu[0];
+        });
+
+        vm.updateMenu = () => {
+            var updateMenu = {
+                title: vm.editMenu.title,
+                description: vm.editMenu.description,
+                price: vm.editMenu.price
+            };
+            console.log('update menu', updateMenu);
+            restaurantService.updateRestaurantMenu(vm.restaurant._id, updateMenu).then((menu) => {
+                console.log('updated menu', menu);
+                $state.go('restaurant.editMenuHome');
+            })
+        };
 
     }
 
