@@ -177,8 +177,8 @@
             .state('restaurant.editMenuHome', {
                 url: '/settings/menu',
                 templateUrl: './app/restaurant/settings/menu/restaurant-menu.html',
-                controller: 'RestaurantSettingsController',
-                controllerAs: 'rsc'
+                controller: 'RestaurantSettingMenuController',
+                controllerAs: 'rsmc'
             })
             .state('restaurant.editMenu', {
                 url: '/settings/edit-menu/:id',

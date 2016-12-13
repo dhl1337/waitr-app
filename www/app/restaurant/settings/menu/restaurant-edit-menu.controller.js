@@ -16,14 +16,15 @@
 
         vm.updateMenu = () => {
             var updateMenu = {
-                title: vm.editMenu.title,
-                description: vm.editMenu.description,
-                price: vm.editMenu.price
+                menuId: vm.editMenu._id,
+                menuTitle: vm.editMenu.title,
+                menuDescription: vm.editMenu.description,
+                menuPrice: vm.editMenu.price
             };
-            console.log('update menu', updateMenu);
-            restaurantService.addRestaurantMenu(vm.restaurant._id, updateMenu).then((menu) => {
+            restaurantService.updateRestaurantMenu(vm.restaurant._id, updateMenu).then((menu) => {
                 console.log('updated menu', menu);
                 $state.go('restaurant.editMenuHome');
+
             })
         };
 

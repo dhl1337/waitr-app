@@ -2,13 +2,19 @@
     "use strict";
     angular
         .module('waitrApp')
-        .controller('RestaurantSettingMenuController', ['restaurantInfo', 'restaurantService', '$stateParams', '$state', RestaurantSettingMenuController]);
+        .controller('RestaurantSettingMenuController', ['restaurantInfo', 'restaurantService', '$state', '$scope', RestaurantSettingMenuController]);
 
-    function RestaurantSettingMenuController (restaurantInfo, restaurantService, $stateParams, $state) {
-        const menuId = $stateParams.id;
+    function RestaurantSettingMenuController (restaurantInfo, restaurantService, $state, $scope) {
+
         const vm = this;
 
-        vm.restaurant = restaurantInfo.restaurant[0];
+        var currentRestaurant = restaurantInfo.restaurant[0];
+
+        $scope.$on("$ionicView.beforeEnter", function(event, data){
+            restaurantService.getCurrentRestaurant(currentRestaurant._id).then((restaurant) => {
+                vm.restaurant = restaurant[0];
+            });
+        });
 
         vm.addMenu = () => {
             const menu = {
