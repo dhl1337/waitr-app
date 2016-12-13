@@ -7,7 +7,6 @@
 
         var vm = this;
 
-        vm.infoHoursToggle = true;
         vm.currentUser = $scope.rrc.currentUser;
         vm.restaurant = $scope.rrc.restaurant;
 
@@ -22,7 +21,23 @@
 
         vm.infoHoursToggle = true;
 
-        vm.showOnClick = (value) => vm.infoHoursToggle = value;
+        vm.showOnClick = (value) => {
+            if (value === 'menu') {
+                vm.infoMenuToggle = true;
+                vm.infoInfoToggle = false;
+                vm.infoHoursToggle = false;
+            }
+            if (value === 'info') {
+                vm.infoInfoToggle = true;
+                vm.infoMenuToggle = false;
+                vm.infoHoursToggle = false;
+            }
+            if (value === 'hours') {
+                vm.infoHoursToggle = true;
+                vm.infoInfoToggle = false;
+                vm.infoMenuToggle = false;
+            }
+        };
     }
 
 })();
