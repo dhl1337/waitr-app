@@ -10,10 +10,14 @@
 
         var currentRestaurant = restaurantInfo.restaurant[0];
 
-        $scope.$on("$ionicView.beforeEnter", function(event, data){
+        var getRestaurant = function () {
             restaurantService.getCurrentRestaurant(currentRestaurant._id).then((restaurant) => {
                 vm.restaurant = restaurant[0];
             });
+        };
+
+        $scope.$on("$ionicView.beforeEnter", function(event, data){
+            getRestaurant()
         });
 
         vm.addMenu = () => {
@@ -27,6 +31,12 @@
                 vm.menuDescription = '';
                 vm.menuPrice = '';
                 $state.go('restaurant.editMenuHome');
+            })
+        };
+
+        vm.deleteMenuItem = (item) => {
+            restaurantService.deleteRestaurantMenuItem(vm.restaurant._id, {_id: item._id}).then(function (restaurant) {
+                getRestaurant();
             })
         };
 

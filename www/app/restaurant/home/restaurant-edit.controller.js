@@ -22,15 +22,11 @@
                 restaurant: vm.currentRestaurant.restaurantName
                 //message: vm.message
             };
-            console.log('this is the phone number', obj.phone);
             restaurantService.notification(obj);
         };
 
         vm.submitEditedEntry = function (person) {
-            console.log("vm.person is: ", person);
             waitlistService.updateWaitlistEntry($stateParams.person, $stateParams.waitlist, person).then(function (res) {
-                console.log("successfully updated entry!");
-
                 $state.go("restaurant.home");
                 $ionicHistory.nextViewOptions({
                     disableBack: true
@@ -73,7 +69,6 @@
 
             confirmPopup.then(function (res) {
                 if (res) {
-                    console.log("user wants to check person in");
                     removeFromWaitlist();
                 } else {
                     console.log("user does not want to check person in");

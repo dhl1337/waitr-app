@@ -46,19 +46,11 @@
 
         var getRestaurant = function () {
             restaurantService.getCurrentRestaurant(vm.restaurant._id).then(function (restaurant) {
-                console.log('restaurant', restaurant);
                 vm.currentRestaurant = restaurant[0];
             })
         };
 
         getRestaurant();
-
-        vm.deleteMenuItem = (item) => {
-            restaurantService.deleteRestaurantMenuItem(vm.restaurant._id, {_id: item._id}).then(function (restaurant) {
-                console.log('restaurant', restaurant);
-                getRestaurant();
-            })
-        };
 
         vm.showWaitTimeModal = (time) => {
             vm.time = time;

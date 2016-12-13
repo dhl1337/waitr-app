@@ -22,7 +22,6 @@
                 menuPrice: vm.editMenu.price
             };
             restaurantService.updateRestaurantMenu(vm.restaurant._id, updateMenu).then((menu) => {
-                console.log('updated menu', menu);
                 $state.go('restaurant.editMenuHome');
 
             })
