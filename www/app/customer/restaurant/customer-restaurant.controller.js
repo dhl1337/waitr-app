@@ -7,7 +7,7 @@
 
         var vm = this;
 
-        vm.infoHoursToggle = true;
+        vm.infoInfoToggle = true;
         vm.restaurantId = $stateParams.restaurantId;
         vm.currentUser = $scope.ccc.currentUser;
         //console.log(vm.currentUser);
@@ -19,6 +19,24 @@
          })*/
 
         restaurantService.getCurrentRestaurant(vm.restaurantId).then((restaurant) => vm.restaurant = restaurant[0]);
+
+        vm.showOnClick = (value) => {
+            if (value === 'menu') {
+                vm.infoMenuToggle = true;
+                vm.infoInfoToggle = false;
+                vm.infoHoursToggle = false;
+            }
+            if (value === 'info') {
+                vm.infoInfoToggle = true;
+                vm.infoMenuToggle = false;
+                vm.infoHoursToggle = false;
+            }
+            if (value === 'hours') {
+                vm.infoHoursToggle = true;
+                vm.infoInfoToggle = false;
+                vm.infoMenuToggle = false;
+            }
+        };
 
         waitlistService.getWaitlist(vm.restaurantId).then(res => vm.customerEntries = res[0]);
 
@@ -38,9 +56,6 @@
         vm.getWebsite = () => window.open(vm.restaurant.restaurantWebsite);
 
         vm.goBack = () => $ionicHistory.goBack();
-
-        vm.infoHoursToggle = true;
-        vm.showOnClick = value => vm.infoHoursToggle = value;
     }
 
 })();
