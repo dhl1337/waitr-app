@@ -311,3 +311,7 @@ ion-spinner {
 #menuPrice {
     float: right;
 }
+
+#restaurantMenuProfile > .list > .item {
+    border-color: transparent;
+}
