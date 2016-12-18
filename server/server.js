@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(__dirname + '/../www'));
 
-mongoose.connect(config.db);
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || config.db);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', () => console.log('Mongo connected at ' + config.db));
